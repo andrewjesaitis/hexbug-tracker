@@ -1,20 +1,15 @@
 import argparse
-import re
+import json
 from math import *
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 
 def parse_input_file(filepath):
-    pattern = re.compile(r"(-?\d+)")
-    pt_arr = []
     with open(filepath, 'r') as f:
-        for line in f:
-            x,y = pattern.findall(line)
-            if x == "-1" or y == "-1":
-                #skip (-1,-1) since these are bad points
-                continue
-            pt_arr.append((int(x), int(y)))      
-    return pt_arr
+        input_data = json.load(f)
+        filtered_data = filter(lambda x: -1 not in x, input_data)  
+        filtered_data = map(tuple, filtered_data)
+    return filtered_data
     
 def dist(pt1, pt2):
     x1, y1 = pt1
