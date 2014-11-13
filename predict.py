@@ -7,10 +7,10 @@ DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
         input_data = json.load(f)
-        filtered_data = filter(lambda x: -1 not in x, input_data)  
-        filtered_data = map(tuple, filtered_data)
+        input_data = fill_missing_points(input_data)
+        input_data = map(tuple, filtered_data)
     return filtered_data
-    
+
 def dist(pt1, pt2):
     x1, y1 = pt1
     x2, y2 = pt2
@@ -33,10 +33,10 @@ def get_box_bounds(pt_arr):
     max_x = max(x_arr)
     min_y = min(y_arr)
     max_y = max(y_arr)
-    
+
     return ((min_x,min_y), (min_x, max_y), (max_x, min_y), (max_x, max_y))
-    
-    
+
+
 def build_property_dict(pts):
     property_dict = {}
     prev_pt = None
@@ -48,7 +48,7 @@ def build_property_dict(pts):
     return property_dict
 
 def output_predictions(predict_arr):
-    assert len(predict_arr) == 60 
+    assert len(predict_arr) == 60
     with open('prediction.txt', 'w') as f:
         for pt in predict_arr:
             f.write(",".join(map(str, pt))+"\n")
@@ -61,7 +61,7 @@ def main():
         filepath = args.input
     else:
         filepath = DEFAULT_TEST_FILE
-    
+
     pt_arr = parse_input_file(DEFAULT_TEST_FILE)
     prop_dict = build_property_dict(pt_arr)
     output_predictions(pt_arr[-60:])
