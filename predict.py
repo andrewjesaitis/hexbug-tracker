@@ -47,6 +47,12 @@ def build_property_dict(pts):
         property_dict[pt] = {"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)}
     return property_dict
 
+def output_predictions(predict_arr):
+    assert len(predict_arr) == 60 
+    with open('prediction.txt', 'w') as f:
+        for pt in predict_arr:
+            f.write(",".join(map(str, pt))+"\n")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input')
@@ -58,6 +64,7 @@ def main():
     
     pt_arr = parse_input_file(DEFAULT_TEST_FILE)
     prop_dict = build_property_dict(pt_arr)
+    output_predictions(pt_arr[-60:])
     print "Point List"
     print pt_arr
     print "Property Dictionary"
