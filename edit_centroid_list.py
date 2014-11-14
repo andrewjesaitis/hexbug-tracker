@@ -38,7 +38,7 @@ def estimate_unknown_points(centroid_coord_list):
         if (centroid_coord_list[i] == [-1,-1]):
             count += 1
             
-            while(centroid_coord_list[i + count][0] == -1 and centroid_coord_list[i + count][0] == -1):
+            while(centroid_coord_list[i + count] == [-1,-1]):
                 count += 1
             
             first_known_coord = centroid_coord_list[i-1]
