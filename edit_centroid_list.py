@@ -1,4 +1,4 @@
-import math
+from math import *
 
 def dist(pt1, pt2):
     x1, y1 = pt1
