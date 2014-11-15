@@ -1,6 +1,8 @@
 import argparse
 import json
 from math import *
+from collections import defaultdict
+
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 
@@ -38,13 +40,13 @@ def get_box_bounds(pt_arr):
 
 
 def build_property_dict(pts):
-    property_dict = {}
+    property_dict = defaultdict(list)
     prev_pt = None
     for pt in pts:
         if not prev_pt:
             prev_pt = pt
             continue
-        property_dict[pt] = {"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)}
+        property_dict[pt].append({"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)})
     return property_dict
 
 def output_predictions(predict_arr):
