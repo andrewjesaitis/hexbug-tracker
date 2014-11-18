@@ -19,7 +19,7 @@ def find_intermediate_points(point1, point2, d):
     if (deltaX != 0):
         #http://math.stackexchange.com/questions/656500/given-a-point-slope-and-a-distance-along-that-slope-easily-find-a-second-p
         m = deltaY / (deltaX * 1.0) # slope
-        r = math.sqrt(1 + m**2)
+        r = sqrt(1 + m**2)
         point3 = [ (x1 + d/r) , (y1 + (d * m)/r) ]
     else:
       # if deltaX = 0 then the line is a vertical line with undefined slope
@@ -27,7 +27,7 @@ def find_intermediate_points(point1, point2, d):
 
     return point3
 
-def estimate_unknown_points(centroid_coord_list):
+def fill_missing_points(centroid_coord_list):
     centroid_coords_with_estimates_list = list(centroid_coord_list)
 
     # iterate through centroid_coord_list and find unknown centroids
