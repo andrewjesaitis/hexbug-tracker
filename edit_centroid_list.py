@@ -1,9 +1,6 @@
 from math import *
 
-def dist(pt1, pt2):
-    x1, y1 = pt1
-    x2, y2 = pt2
-    return sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+from box_world import dist
 
 def find_intermediate_points(point1, point2, d):
     """
