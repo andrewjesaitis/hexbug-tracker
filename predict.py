@@ -6,6 +6,7 @@ from collections import defaultdict
 
 from box_world import *
 from edit_centroid_list import fill_missing_points
+from hexbug_plot import plot_actual_vs_prediction
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 
@@ -54,6 +55,8 @@ def main():
     print prop_dict
     print "Box Bounds"
     print get_box_bounds(pt_arr)
+    plot_actual_vs_prediction(pt_arr[-60:], pt_arr[:60], calc_l2_error)
+
 
 if __name__ == "__main__":
     main()
