@@ -28,9 +28,14 @@ def main():
         prop_dict = build_property_dict(pt_arr)
         print prop_dict
     elif args.test:
-        plot_actual_vs_prediction(pt_arr[-60:], pt_arr[:60], calc_l2_error)
+        actual = pt_arr[-60:]
+        preceding = pt_arr[:-60]
+        # predictions = predict(preceding)
+        predictions = preceding
+        plot_actual_vs_prediction(actual, predictions, calc_l2_error)
     else:
-        output_predictions(pt_arr[-60:])
+        actual = pt_arr[-60:]
+        output_predictions(actual)
 
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
