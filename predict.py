@@ -32,6 +32,10 @@ def output_predictions(predict_arr):
         for pt in predict_arr:
             f.write(",".join(map(str, pt))+"\n")
 
+def calc_l2_error(prediction, actual):
+    assert len(prediction) == len(actual)
+    return round(sqrt(sum([dist(pt_predict,pt_actual)**2 for pt_predict,pt_actual in zip(prediction,actual)])), 2)
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-i', '--input')
