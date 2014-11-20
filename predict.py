@@ -10,6 +10,28 @@ from hexbug_plot import plot_actual_vs_prediction
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 
+def main():
+    parser = argparse.ArgumentParser(description='Default: Output a prediction to prediction.txt for the next 60 frames')
+    parser.add_argument('-i', '--input', help='Specify an input file', metavar='FILE', default=DEFAULT_TEST_FILE)
+    parser.add_argument('-b', '--bounds', action='store_true', help='Calculate and print the bounds of the box')
+    parser.add_argument('-p', '--properties', action='store_true', help='Output the properties for each point')
+    parser.add_argument('-t', '--test', action='store_true', help='Use prior points to predict the last 60 known points; graph the comparison')
+    args = parser.parse_args()
+
+    pt_arr = parse_input_file(args.input)
+
+    if args.bounds:
+        print "Box Bounds"
+        print get_box_bounds(pt_arr)
+    elif args.properties:
+        print "Property Dictionary"
+        prop_dict = build_property_dict(pt_arr)
+        print prop_dict
+    elif args.test:
+        plot_actual_vs_prediction(pt_arr[-60:], pt_arr[:60], calc_l2_error)
+    else:
+        output_predictions(pt_arr[-60:])
+
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
         input_data = json.load(f)
@@ -36,26 +58,6 @@ def output_predictions(predict_arr):
 def calc_l2_error(prediction, actual):
     assert len(prediction) == len(actual)
     return round(sqrt(sum([dist(pt_predict,pt_actual)**2 for pt_predict,pt_actual in zip(prediction,actual)])), 2)
-
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-i', '--input')
-    args = parser.parse_args()
-    if args.input:
-        filepath = args.input
-    else:
-        filepath = DEFAULT_TEST_FILE
-
-    pt_arr = parse_input_file(DEFAULT_TEST_FILE)
-    prop_dict = build_property_dict(pt_arr)
-    output_predictions(pt_arr[-60:])
-    print "Point List"
-    print pt_arr
-    print "Property Dictionary"
-    print prop_dict
-    print "Box Bounds"
-    print get_box_bounds(pt_arr)
-    plot_actual_vs_prediction(pt_arr[-60:], pt_arr[:60], calc_l2_error)
 
 
 if __name__ == "__main__":
