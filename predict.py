@@ -4,6 +4,7 @@ import argparse
 import json
 from collections import defaultdict
 
+from robot import robot
 from box_world import *
 from edit_centroid_list import fill_missing_points
 from hexbug_plot import plot_actual_vs_prediction
@@ -30,12 +31,18 @@ def main():
     elif args.test:
         actual = pt_arr[-60:]
         preceding = pt_arr[:-60]
-        # predictions = predict(preceding)
-        predictions = preceding
+        predictions = predict(preceding)
         plot_actual_vs_prediction(actual, predictions, calc_l2_error)
     else:
         actual = pt_arr[-60:]
         output_predictions(actual)
+
+def predict(points):
+    heading = calculate_angle(points[-1], points[-2])
+    speed = dist(points[-2], points[-1])
+    x, y = points[-1]
+    bot = robot(x, y, heading, speed)
+    return [bot.advance() for i in range(60)]
 
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
