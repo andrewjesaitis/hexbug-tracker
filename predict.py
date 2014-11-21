@@ -22,7 +22,7 @@ def main():
 
     if args.bounds:
         print "Box Bounds"
-        print get_box_bounds(pt_arr)
+        print calculate_box_bounds(pt_arr)
     elif args.properties:
         print "Property Dictionary"
         prop_dict = build_property_dict(pt_arr)

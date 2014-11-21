@@ -16,7 +16,7 @@ def calculate_angle(point1, point2):
     x2, y2 = point2
     return angle_trunc(atan2((y1-y2),(x1-x2)))
 
-def get_box_bounds(pt_arr):
+def calculate_box_bounds(pt_arr):
     x_arr, y_arr = zip(*pt_arr)
     min_x = min(x_arr)
     max_x = max(x_arr)
@@ -24,3 +24,12 @@ def get_box_bounds(pt_arr):
     max_y = max(y_arr)
 
     return ((min_x,min_y), (min_x, max_y), (max_x, min_y), (max_x, max_y))
+
+def box_bounds():
+    '''box bounds, pre-calculated from training'''
+    return {
+        'min_x': 8,
+        'max_x': 836,
+        'min_y': 75,
+        'max_y': 460
+    }
