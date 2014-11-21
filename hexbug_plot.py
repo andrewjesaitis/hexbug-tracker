@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 
-def plot_actual_vs_prediction(prediction=[], actual=[], err_fn=None):
+def plot_actual_vs_prediction(actual=[], prediction=[], err_fn=None):
     plt.title("Hexbug Locations", fontsize=18, y=1.1)
     ax = plt.gca()
     ax.invert_yaxis()
