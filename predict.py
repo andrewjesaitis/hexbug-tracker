@@ -53,12 +53,10 @@ def parse_input_file(filepath):
 
 def build_property_dict(pts):
     property_dict = defaultdict(list)
-    prev_pt = None
+    prev_pt = pts[0]
     for pt in pts:
-        if not prev_pt:
-            prev_pt = pt
-            continue
         property_dict[pt].append({"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)})
+        prev_pt = pt
     return property_dict
 
 def output_predictions(predict_arr):
