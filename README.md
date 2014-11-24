@@ -33,6 +33,6 @@ This is temporary and does not implement any robotic AI algorithms.
 Team
 ----
 
-* Alfonso Hernandez ()
+* Alfonso Hernandez (ahernandez44)
 * Andrew Jesaitis ()
 * Edward Anderson (eanderson73)
