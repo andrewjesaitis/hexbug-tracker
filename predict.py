@@ -2,6 +2,7 @@
 
 import argparse
 import json
+import random
 from collections import defaultdict
 
 from robot import robot
@@ -17,6 +18,7 @@ def main():
     parser.add_argument('-b', '--bounds', action='store_true', help='Calculate and print the bounds of the box')
     parser.add_argument('-p', '--properties', action='store_true', help='Output the properties for each point')
     parser.add_argument('-t', '--test', action='store_true', help='Use prior points to predict the last 60 known points; graph the comparison')
+    parser.add_argument('-r', '--random-test', action='store_true', help='Use prior points to predict the following 60 known points, starting at a random location; graph the comparison')
     args = parser.parse_args()
 
     pt_arr = parse_input_file(args.input)
@@ -28,9 +30,14 @@ def main():
         print "Property Dictionary"
         prop_dict = build_property_dict(pt_arr)
         print prop_dict
-    elif args.test:
-        actual = pt_arr[-60:]
-        preceding = pt_arr[:-60]
+    elif args.test or args.random_test:
+        if args.random_test:
+            start_index = random.randint(2, len(pt_arr) - 60)
+            actual = pt_arr[start_index+2:start_index+62]
+            preceding = pt_arr[start_index:start_index+2]
+        else:
+            actual = pt_arr[-60:]
+            preceding = pt_arr[:-60]
         predictions = predict(preceding)
         plot_actual_vs_prediction(actual, predictions, calc_l2_error)
     else:
