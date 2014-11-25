@@ -34,5 +34,5 @@ Team
 ----
 
 * Alfonso Hernandez (ahernandez44)
-* Andrew Jesaitis ()
+* Andrew Jesaitis (ajesaitis3)
 * Edward Anderson (eanderson73)
