@@ -5,10 +5,11 @@ import json
 import random
 from collections import defaultdict
 
-from robot import robot
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
+from path import smooth
+from robot import robot
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 
@@ -34,13 +35,15 @@ def main():
     elif args.test or args.random_test:
         for i in range(int(args.iterations)):
             if args.random_test:
-                start_index = random.randint(2, len(pt_arr) - 60)
-                actual = pt_arr[start_index+2:start_index+62]
-                preceding = pt_arr[start_index:start_index+2]
+                start_index = random.randint(7, len(pt_arr) - 60)
+                actual = pt_arr[start_index+7:start_index+67]
+                preceding = pt_arr[:start_index+7]
             else:
                 actual = pt_arr[-60:]
                 preceding = pt_arr[:-60]
-            predictions = predict(preceding)
+            # TODO: Instead of the last 7, smooth all the points up to the last collision
+            path = smooth(preceding[-7:])
+            predictions = predict(path)
             plot_actual_vs_prediction(actual, predictions, calc_l2_error)
     else:
         actual = pt_arr[-60:]
@@ -59,7 +62,6 @@ def parse_input_file(filepath):
         input_data = fill_missing_points(input_data)
         input_data = remove_outlier_points(input_data)
         input_data = fill_missing_points(input_data)
-        input_data = map(tuple, input_data)
     return input_data
 
 def build_property_dict(pts):
