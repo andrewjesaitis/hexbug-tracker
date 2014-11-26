@@ -28,8 +28,8 @@ def calculate_box_bounds(pt_arr):
 def box_bounds():
     '''box bounds, pre-calculated from training'''
     return {
-        'min_x': 8,
-        'max_x': 836,
-        'min_y': 75,
-        'max_y': 460
+        'min_x': 142,
+        'max_x': 680,
+        'min_y': 79,
+        'max_y': 441
     }
