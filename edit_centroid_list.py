@@ -1,6 +1,6 @@
 from math import *
-
-from box_world import dist
+import numpy as np
+from box_world import dist, calculate_angle
 
 def find_intermediate_points(point1, point2, d):
     """
@@ -42,6 +42,9 @@ def fill_missing_points(centroid_coord_list):
             second_known_coord = centroid_coord_list[i + count]
 
             d = dist(first_known_coord, second_known_coord)
+            angle = calculate_angle(second_known_coord, first_known_coord)
+            if abs(angle) > pi/2 or angle == -1*pi/2 :
+                second_known_coord, first_known_coord = first_known_coord, second_known_coord
 
             for c in range(count):
                 displacement = (d * (c + 1)) / (count + 1)
