@@ -53,3 +53,33 @@ def fill_missing_points(centroid_coord_list):
         i += (count + 1)
 
     return centroid_coords_with_estimates_list
+
+def remove_outlier_points(centroid_coord_list):
+    distance_list = []
+    prev_pt = centroid_coord_list[0]
+    for pt in centroid_coord_list:
+        distance_list.append(dist(prev_pt, pt))
+        prev_pt = pt
+    distances = np.array(distance_list)
+    cutoff_distance = np.percentile(distances, 98)
+
+    filtered_arr = filter(lambda x: -1 not in x, centroid_coord_list)
+    x_arr, y_arr = zip(*filtered_arr)
+    x_cutoffs = np.percentile(x_arr, [2, 98])
+    y_cutoffs = np.percentile(y_arr, [2, 98])
+    print x_cutoffs
+
+    #doing an empty slice in python returns a deep copy of the list
+    cleaned_centroid_coord_list = centroid_coord_list[:]
+    prev_pt = centroid_coord_list[0]
+    for idx, pt in enumerate(centroid_coord_list):
+        if prev_pt == [-1,-1]:
+            prev_pt = pt
+            continue
+        distance = dist(prev_pt, pt)
+        # set any point more than 1 sd of the distance away from it's neighbor to (-1,-1)
+        # set any point in the highest and lowest 2 percentiles to (-1,-1)
+        if distance > cutoff_distance or pt[0] < x_cutoffs[0] or pt[0] > x_cutoffs[1] or pt[1] < y_cutoffs[0] or pt[1] > y_cutoffs[1]:
+            cleaned_centroid_coord_list[idx] = [-1,-1]
+        prev_pt = cleaned_centroid_coord_list[idx]
+    return cleaned_centroid_coord_list

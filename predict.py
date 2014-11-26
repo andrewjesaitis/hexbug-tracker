@@ -7,7 +7,7 @@ from collections import defaultdict
 
 from robot import robot
 from box_world import *
-from edit_centroid_list import fill_missing_points
+from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
@@ -56,6 +56,8 @@ def predict(points):
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
         input_data = json.load(f)
+        input_data = fill_missing_points(input_data)
+        input_data = remove_outlier_points(input_data)
         input_data = fill_missing_points(input_data)
         input_data = map(tuple, input_data)
     return input_data
