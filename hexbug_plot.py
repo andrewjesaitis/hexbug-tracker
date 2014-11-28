@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from box_world import box_bounds
 
-def plot_actual_vs_prediction(actual=[], prediction=[], err_fn=None):
+def plot_actual_vs_prediction(actual, prediction, orig_preceding=[], smoothed_preceding=[], err_fn=None):
     plt.title("Hexbug Locations", fontsize=18, y=1.1)
     ax = plt.gca()
     ax.invert_yaxis()
@@ -11,6 +11,8 @@ def plot_actual_vs_prediction(actual=[], prediction=[], err_fn=None):
     margin = 20
     plt.xlim(bounds['min_x'] - margin, bounds['max_x'] + margin)
     plt.ylim(bounds['min_y'] - margin, bounds['max_y'] + margin)
+    given_handle = ax.scatter(*zip(*orig_preceding), color='black', alpha=.5)
+    smoothed_handle = ax.scatter(*zip(*smoothed_preceding), color='orange', alpha=.5)
     prediction_handle = ax.scatter(*zip(*prediction), color='blue', alpha=.5)
     actual_handle = ax.scatter(*zip(*actual), color='green', alpha=.5)
 
@@ -19,6 +21,10 @@ def plot_actual_vs_prediction(actual=[], prediction=[], err_fn=None):
     err_str = 'N/A'
     if err_fn:
         err_str = str(err_fn(prediction,actual))
-    plt.legend([prediction_handle, actual_handle, extra], ['Predicted Locations', 'Actual Position', "L2 Error: " + err_str ], loc='upper center', bbox_to_anchor=(0.5, -0.05),
-          fancybox=True, shadow=True, ncol=5)
+    plt.legend(
+        [actual_handle, prediction_handle, given_handle, smoothed_handle, extra],
+        ['Actual Position', 'Predicted Locations', 'Given points', 'Smoothed points', "L2 Error: " + err_str ],
+        loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=3
+    )
+    plt.tight_layout(rect=(0, .13, 1, 1.02))
     plt.show()

@@ -44,7 +44,7 @@ def main():
             # TODO: Instead of the last 7, smooth all the points up to the last collision
             path = smooth(preceding[-7:])
             predictions = predict(path)
-            plot_actual_vs_prediction(actual, predictions, calc_l2_error)
+            plot_actual_vs_prediction(actual, predictions, preceding[-7:], path, calc_l2_error)
     else:
         actual = pt_arr[-60:]
         output_predictions(actual)
