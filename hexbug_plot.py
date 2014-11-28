@@ -1,3 +1,4 @@
+import warnings
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 from box_world import box_bounds
@@ -26,5 +27,10 @@ def plot_actual_vs_prediction(actual, prediction, orig_preceding=[], smoothed_pr
         ['Actual Position', 'Predicted Locations', 'Given points', 'Smoothed points', "L2 Error: " + err_str ],
         loc='upper center', bbox_to_anchor=(0.5, -0.05), fancybox=True, shadow=True, ncol=3
     )
-    plt.tight_layout(rect=(0, .13, 1, 1.02))
+    set_layout(plt)
     plt.show()
+
+def set_layout(plt):
+    with warnings.catch_warnings():
+        warnings.simplefilter('ignore')
+        plt.tight_layout(rect=(0, .13, 1, 1.02))
