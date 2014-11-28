@@ -1,13 +1,16 @@
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+from box_world import box_bounds
 
 def plot_actual_vs_prediction(actual=[], prediction=[], err_fn=None):
     plt.title("Hexbug Locations", fontsize=18, y=1.1)
     ax = plt.gca()
     ax.invert_yaxis()
     ax.xaxis.tick_top()
-    plt.xlim(-1,max(zip(*prediction)[0]+zip(*actual)[0])*1.1)
-    plt.ylim(max(zip(*prediction)[1]+zip(*actual)[1])*1.1, -1)
+    bounds = box_bounds()
+    margin = 20
+    plt.xlim(bounds['min_x'] - margin, bounds['max_x'] + margin)
+    plt.ylim(bounds['min_y'] - margin, bounds['max_y'] + margin)
     prediction_handle = ax.scatter(*zip(*prediction), color='blue', alpha=.5)
     actual_handle = ax.scatter(*zip(*actual), color='green', alpha=.5)
 
