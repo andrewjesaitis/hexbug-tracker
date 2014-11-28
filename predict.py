@@ -12,6 +12,7 @@ from path import smooth
 from robot import robot
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
+FRAMES_TO_PREDICT = 60
 
 def main():
     parser = argparse.ArgumentParser(description='Default: Output a prediction to prediction.txt for the next 60 frames')
@@ -35,18 +36,18 @@ def main():
     elif args.test or args.random_test:
         for i in range(int(args.iterations)):
             if args.random_test:
-                start_index = random.randint(7, len(pt_arr) - 60)
-                actual = pt_arr[start_index+7:start_index+67]
+                start_index = random.randint(7, len(pt_arr) - FRAMES_TO_PREDICT)
+                actual = pt_arr[start_index+7:start_index+FRAMES_TO_PREDICT+7]
                 preceding = pt_arr[:start_index+7]
             else:
-                actual = pt_arr[-60:]
-                preceding = pt_arr[:-60]
+                actual = pt_arr[-FRAMES_TO_PREDICT:]
+                preceding = pt_arr[:-FRAMES_TO_PREDICT]
             # TODO: Instead of the last 7, smooth all the points up to the last collision
             path = smooth(preceding[-7:])
             predictions = predict(path)
             plot_actual_vs_prediction(actual, predictions, preceding[-7:], path, calc_l2_error)
     else:
-        actual = pt_arr[-60:]
+        actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
 
 def predict(points):
@@ -54,7 +55,7 @@ def predict(points):
     speed = dist(points[-2], points[-1])
     x, y = points[-1]
     bot = robot(x, y, heading, speed)
-    return [bot.advance() for i in range(60)]
+    return [bot.advance() for i in range(FRAMES_TO_PREDICT)]
 
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
@@ -73,7 +74,7 @@ def build_property_dict(pts):
     return property_dict
 
 def output_predictions(predict_arr):
-    assert len(predict_arr) == 60
+    assert len(predict_arr) == FRAMES_TO_PREDICT
     with open('prediction.txt', 'w') as f:
         for pt in predict_arr:
             f.write(",".join(map(str, pt))+"\n")
