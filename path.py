@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-def smooth(path, a = 0.5, B = 0.1, tolerance = 0.000001):
+def smooth(path, a = 0.5, B = 0.5, tolerance = 0.000001):
     x = path
     y = deepcopy(path)
     delta = tolerance
