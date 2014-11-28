@@ -31,5 +31,5 @@ def box_bounds():
         'min_x': 142,
         'max_x': 680,
         'min_y': 79,
-        'max_y': 441
+        'max_y': 425
     }
