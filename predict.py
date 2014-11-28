@@ -36,12 +36,11 @@ def main():
     elif args.test or args.random_test:
         for i in range(int(args.iterations)):
             if args.random_test:
-                start_index = random.randint(7, len(pt_arr) - FRAMES_TO_PREDICT)
-                actual = pt_arr[start_index+7:start_index+FRAMES_TO_PREDICT+7]
-                preceding = pt_arr[:start_index+7]
+                cutoff_index = random.randint(2, len(pt_arr) - FRAMES_TO_PREDICT)
             else:
-                actual = pt_arr[-FRAMES_TO_PREDICT:]
-                preceding = pt_arr[:-FRAMES_TO_PREDICT]
+                cutoff_index = len(pt_arr) - FRAMES_TO_PREDICT
+            actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
+            preceding = pt_arr[:cutoff_index]
             # TODO: Instead of the last 7, smooth all the points up to the last collision
             path = smooth(preceding[-7:])
             predictions = predict(path)
