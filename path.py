@@ -28,4 +28,5 @@ def smooth(path, a = 0.5, B = 0.5, tolerance = 0.000001):
     return y
 
 def points_since_last_collision(points):
+    '''Return the subset of points at the tail of points, up until the final collision'''
     return points[-7:]
