@@ -4,12 +4,12 @@ import argparse
 import json
 import random
 from collections import defaultdict
+from math import *
 
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
-from path import smooth
-from robot import robot
+from path import predict
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 FRAMES_TO_PREDICT = 60
@@ -41,20 +41,11 @@ def main():
                 cutoff_index = len(pt_arr) - FRAMES_TO_PREDICT
             actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
             preceding = pt_arr[:cutoff_index]
-            # TODO: Instead of the last 7, smooth all the points up to the last collision
-            path = smooth(preceding[-7:])
-            predictions = predict(path)
-            plot_actual_vs_prediction(actual, predictions, preceding[-7:], path, calc_l2_error)
+            predictions, smoothed_path = predict(preceding)
+            plot_actual_vs_prediction(actual, predictions, preceding[-7:], smoothed_path, calc_l2_error)
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
-
-def predict(points):
-    heading = calculate_angle(points[-1], points[-2])
-    speed = dist(points[-2], points[-1])
-    x, y = points[-1]
-    bot = robot(x, y, heading, speed)
-    return [bot.advance() for i in range(FRAMES_TO_PREDICT)]
 
 def parse_input_file(filepath):
     with open(filepath, 'r') as f:
