@@ -29,21 +29,25 @@ class robot:
         # truncate to fit physical limitations
         distance = max(0.0, distance)
 
+        # Naive bounce model based on angle to reflection
+        bounds = box_bounds()
+        #Top Edge
+        if self.x < bounds['min_x']:
+            self.heading = pi - self.heading
+        #Right Edge
+        elif self.y < bounds['min_y']:
+            self.heading = -1 * self.heading
+        #Bottom Edge
+        if self.x > bounds['max_x']:
+            self.heading = pi - self.heading
+        #Left Edge
+        if self.y > bounds['max_y']:
+            self.heading = -1 * self.heading
+
         # Execute motion
         self.heading = angle_trunc(self.heading)
         self.x += distance * cos(self.heading)
         self.y += distance * sin(self.heading)
-
-        # Limit to the box; replace this later with bouncing off walls
-        bounds = box_bounds()
-        if self.x < bounds['min_x']:
-            self.x = bounds['min_x']
-        if self.y < bounds['min_y']:
-            self.y = bounds['min_y']
-        if self.x > bounds['max_x']:
-            self.x = bounds['max_x']
-        if self.y > bounds['max_y']:
-            self.y = bounds['max_y']
 
     def advance(self):
         """This function is used to advance the bot."""
