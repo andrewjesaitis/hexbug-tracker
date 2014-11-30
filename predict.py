@@ -21,6 +21,7 @@ def main():
     parser.add_argument('-p', '--properties', action='store_true', help='Output the properties for each point')
     parser.add_argument('-t', '--test', action='store_true', help='Use prior points to predict the last 60 known points; graph the comparison')
     parser.add_argument('-r', '--random-test', action='store_true', help='Use prior points to predict the following 60 known points, starting at a random location; graph the comparison; repeat')
+    parser.add_argument('-e', '--error-test', action='store_true', help='Use the entire input dataset to generate an average L2 error')
     parser.add_argument('-n', '--iterations', default='1', metavar='N', help='For random tests, repeat N times')
     args = parser.parse_args()
 
@@ -47,6 +48,18 @@ def main():
             predictions_arr.append(predictions)
             smoothed_arr.append(smoothed_path)
         plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
+    elif args.error_test:
+        #carve input data in 1 min (1440 frame) pieces
+        l2_err_arr = []
+        cutoff_index = 1440
+        while(cutoff_index < len(pt_arr)-FRAMES_TO_PREDICT):
+            preceding = pt_arr[:cutoff_index][-10:]
+            predictions, smoothed_path = predict(preceding)
+            actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
+            l2_err_arr.append(calc_l2_error(predictions, actual))
+            cutoff_index += 1440
+        print "Over " + str(len(pt_arr)/1440) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
+
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
