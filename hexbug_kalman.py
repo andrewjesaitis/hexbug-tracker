@@ -1,13 +1,15 @@
 import numpy as np
 
 class Kalman:
+    # The ideas around the physical model come from a 2-d kalman filter tutorial found at:
+    # http://studentdavestutorials.weebly.com/object-tracking-2d-kalman-filter.html
 
     def __init__(self, property_arr):
         #set up necessary matricies
-        self.x_noise = 1.
-        self.y_noise = 1.
+        self.x_noise = 50.
+        self.y_noise = 50.
         self.dt = 1
-        self.u = .01
+        self.u = .05
         #position uncertainty
         self.initial_pos_uncertainty = np.matrix([[self.dt^4/4, 0, self.dt^3/2, 0], [0, self.dt^4/4, 0, self.dt^3/2], [self.dt^3/2, 0, self.dt^2, 0],  [0, self.dt^3/2, 0, self.dt^2]])
         # measurement uncertainty
