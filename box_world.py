@@ -22,7 +22,6 @@ def calculate_box_bounds(pt_arr):
     max_x = max(x_arr)
     min_y = min(y_arr)
     max_y = max(y_arr)
-
     return ((min_x,min_y), (min_x, max_y), (max_x, min_y), (max_x, max_y))
 
 def box_bounds():

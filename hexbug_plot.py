@@ -15,6 +15,7 @@ def plot_actual_vs_prediction(actual_arr, prediction_arr, orig_preceding_arr=[[]
         margin = 20
         plt.xlim(bounds['min_x'] - margin, bounds['max_x'] + margin)
         plt.ylim(bounds['min_y'] - margin, bounds['max_y'] + margin)
+        print orig_preceding
         given_handle = ax.scatter(*zip(*orig_preceding), color='black', alpha=.5)
         smoothed_handle = ax.scatter(*zip(*smoothed_preceding), color='orange', alpha=.5)
         prediction_handle = ax.scatter(*zip(*prediction), color='blue', alpha=.5)

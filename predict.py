@@ -5,11 +5,13 @@ import json
 import random
 from collections import defaultdict
 from math import *
+import numpy as np
 
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
 from hexbug_path import predict
+from hexbug_kalman import Kalman
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 FRAMES_TO_PREDICT = 60
@@ -23,6 +25,7 @@ def main():
     parser.add_argument('-r', '--random-test', action='store_true', help='Use prior points to predict the following 60 known points, starting at a random location; graph the comparison; repeat')
     parser.add_argument('-e', '--error-test', action='store_true', help='Use the entire input dataset to generate an average L2 error')
     parser.add_argument('-n', '--iterations', default='1', metavar='N', help='For random tests, repeat N times')
+    parser.add_argument('-k', '--kalman', action='store_true', help='Predict motion using a Kalman filter')
     args = parser.parse_args()
 
     pt_arr = parse_input_file(args.input)
@@ -49,7 +52,7 @@ def main():
             smoothed_arr.append(smoothed_path)
         plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
     elif args.error_test:
-        chunk_offset = 15
+        chunk_offset = 1440
         l2_err_arr = []
         cutoff_index = chunk_offset
         while(cutoff_index < len(pt_arr)-FRAMES_TO_PREDICT):
@@ -59,6 +62,20 @@ def main():
             l2_err_arr.append(calc_l2_error(predictions, actual))
             cutoff_index += chunk_offset
         print "Over " + str(len(pt_arr)/chunk_offset) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
+    elif args.kalman:
+        actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
+        measurements = build_property_array(pt_arr)
+        chunk_offset = 1440
+        l2_err_arr = []
+        cutoff_index = chunk_offset
+        kf = Kalman(measurements)
+        while(cutoff_index < len(pt_arr)-FRAMES_TO_PREDICT):
+            predictions = kf.filter(cutoff_index, FRAMES_TO_PREDICT)[10:]
+            actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
+            l2_err_arr.append(calc_l2_error(predictions, actual))
+            cutoff_index += chunk_offset
+        print "Over " + str(len(pt_arr)/chunk_offset) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
+        # plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
@@ -79,6 +96,14 @@ def build_property_dict(pts):
         property_dict[pt].append({"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)})
         prev_pt = pt
     return property_dict
+
+def build_property_array(pts):
+    property_arr = []
+    prev_pt = pts[0]
+    for pt in pts:
+        property_arr.append(np.array([pt[0], pt[1], pt[0] - prev_pt[0], pt[1] - prev_pt[1]]))
+        prev_pt = pt
+    return property_arr
 
 def output_predictions(predict_arr):
     assert len(predict_arr) == FRAMES_TO_PREDICT
