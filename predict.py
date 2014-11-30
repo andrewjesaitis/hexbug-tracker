@@ -49,16 +49,16 @@ def main():
             smoothed_arr.append(smoothed_path)
         plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
     elif args.error_test:
-        #carve input data in 1 min (1440 frame) pieces
+        chunk_offset = 15
         l2_err_arr = []
-        cutoff_index = 1440
+        cutoff_index = chunk_offset
         while(cutoff_index < len(pt_arr)-FRAMES_TO_PREDICT):
             preceding = pt_arr[:cutoff_index][-10:]
             predictions, smoothed_path = predict(preceding)
             actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
             l2_err_arr.append(calc_l2_error(predictions, actual))
-            cutoff_index += 1440
-        print "Over " + str(len(pt_arr)/1440) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
+            cutoff_index += chunk_offset
+        print "Over " + str(len(pt_arr)/chunk_offset) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
