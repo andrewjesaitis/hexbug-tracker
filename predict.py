@@ -9,7 +9,7 @@ from math import *
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
-from path import predict
+from hexbug_path import predict
 
 DEFAULT_TEST_FILE = "./training_video1-centroid_data"
 FRAMES_TO_PREDICT = 60
@@ -59,7 +59,6 @@ def main():
             l2_err_arr.append(calc_l2_error(predictions, actual))
             cutoff_index += 1440
         print "Over " + str(len(pt_arr)/1440) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
-
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
@@ -74,6 +73,7 @@ def parse_input_file(filepath):
 
 def build_property_dict(pts):
     property_dict = defaultdict(list)
+    pts = map(tuple, pts)
     prev_pt = pts[0]
     for pt in pts:
         property_dict[pt].append({"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)})
@@ -89,7 +89,6 @@ def output_predictions(predict_arr):
 def calc_l2_error(prediction, actual):
     assert len(prediction) == len(actual)
     return round(sqrt(sum([dist(pt_predict,pt_actual)**2 for pt_predict,pt_actual in zip(prediction,actual)])), 2)
-
 
 if __name__ == "__main__":
     main()
