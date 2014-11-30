@@ -34,10 +34,11 @@ class Kalman:
             x, P = self.predict(x, P)
             x, P = self.update(x, P, Z)
             predict_arr.append([x.item(0,0), x.item(0,1)])
-        predict_arr = predict_arr[-10:]
-        for n in range(number_frames_to_predict):
-            x, P = self.predict(x, P)
-            predict_arr.append([x.item(0,0), x.item(0,1)])
+        if(number_frames_to_predict > 0):
+            predict_arr = predict_arr[-10:]
+            for n in range(number_frames_to_predict):
+                x, P = self.predict(x, P)
+                predict_arr.append([x.item(0,0), x.item(0,1)])
         return predict_arr
 
     def predict(self, x, P):

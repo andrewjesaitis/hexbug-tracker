@@ -26,6 +26,7 @@ def main():
     parser.add_argument('-e', '--error-test', action='store_true', help='Use the entire input dataset to generate an average L2 error')
     parser.add_argument('-n', '--iterations', default='1', metavar='N', help='For random tests, repeat N times')
     parser.add_argument('-k', '--kalman', action='store_true', help='Predict motion using a Kalman filter')
+    parser.add_argument('-k2', '--kalman2', action='store_true', help='Predict motion using a Kalman filter')
     args = parser.parse_args()
 
     pt_arr = parse_input_file(args.input)
@@ -52,7 +53,7 @@ def main():
             smoothed_arr.append(smoothed_path)
         plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
     elif args.error_test:
-        chunk_offset = 1440
+        chunk_offset = 15
         l2_err_arr = []
         cutoff_index = chunk_offset
         while(cutoff_index < len(pt_arr)-FRAMES_TO_PREDICT):
@@ -76,6 +77,21 @@ def main():
             cutoff_index += chunk_offset
         print "Over " + str(len(pt_arr)/chunk_offset) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
         # plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
+    elif args.kalman2:
+        actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
+        measurements = build_property_array(pt_arr)
+        chunk_offset = 15
+        l2_err_arr = []
+        cutoff_index = chunk_offset
+        kf = Kalman(measurements)
+        filtered_data = kf.filter(len(measurements), 0)
+        while(cutoff_index < len(pt_arr)-FRAMES_TO_PREDICT):
+            preceding = filtered_data[:cutoff_index][-10:]
+            predictions, smoothed_path = predict(preceding)
+            actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
+            l2_err_arr.append(calc_l2_error(predictions, actual))
+            cutoff_index += chunk_offset
+        print "Over " + str(len(pt_arr)/chunk_offset) + " iterations, the average L2 error was: " + str(sum(l2_err_arr)/len(l2_err_arr))
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
