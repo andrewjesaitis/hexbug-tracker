@@ -34,15 +34,19 @@ def main():
         prop_dict = build_property_dict(pt_arr)
         print prop_dict
     elif args.test or args.random_test:
+        actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
         for i in range(int(args.iterations)):
             if args.random_test:
                 cutoff_index = random.randint(2, len(pt_arr) - FRAMES_TO_PREDICT)
             else:
                 cutoff_index = len(pt_arr) - FRAMES_TO_PREDICT
-            actual = pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT]
-            preceding = pt_arr[:cutoff_index]
+            preceding = pt_arr[:cutoff_index][-10:]
             predictions, smoothed_path = predict(preceding)
-            plot_actual_vs_prediction(actual, predictions, preceding[-7:], smoothed_path, calc_l2_error)
+            actual_arr.append(pt_arr[cutoff_index:cutoff_index+FRAMES_TO_PREDICT])
+            preceding_arr.append(preceding)
+            predictions_arr.append(predictions)
+            smoothed_arr.append(smoothed_path)
+        plot_actual_vs_prediction(actual_arr, predictions_arr, preceding_arr, smoothed_arr, calc_l2_error)
     else:
         actual = pt_arr[-FRAMES_TO_PREDICT:]
         output_predictions(actual)
