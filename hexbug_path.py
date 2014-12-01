@@ -6,9 +6,9 @@ from robot import robot
 def predict(points, frames_to_predict=60):
     points = points_since_last_collision(points)
     path = smooth(points)
-    heading = calculate_angle(points[-1], points[-2])
-    speed = dist(points[-2], points[-1])
-    x, y = points[-1]
+    heading = calculate_angle(path[-1], path[-2])
+    speed = dist(path[-2], path[-1])
+    x, y = path[-1]
     bot = robot(x, y, heading, speed)
     return ([bot.advance() for i in range(frames_to_predict)], path)
 
