@@ -3,7 +3,7 @@ from box_world import *
 import random
 
 class robot:
-    def __init__(self, x = 0.0, y = 0.0, heading = 0.0, distance = 1.0):
+    def __init__(self, x = 0.0, y = 0.0, heading = 0.0, distance = 1.0, heading_delta = 0.0):
         """This function is called when you create a new robot. It sets some of
         the attributes of the robot, either to their default values or to the values
         specified when it is created."""
@@ -13,6 +13,7 @@ class robot:
         self.distance = distance # only applies to target bot, who always moves at same speed.
         self.distance_noise    = 0.0
         self.measurement_noise = 0.0
+        self.heading_delta = heading_delta
 
 
     def set_noise(self, new_d_noise, new_m_noise):
@@ -34,18 +35,22 @@ class robot:
         #Top Edge
         if self.x < bounds['min_x']:
             self.heading = pi - self.heading
+            self.heading_delta = 0
         #Right Edge
         elif self.y < bounds['min_y']:
             self.heading = -1 * self.heading
+            self.heading_delta = 0
         #Bottom Edge
         if self.x > bounds['max_x']:
             self.heading = pi - self.heading
+            self.heading_delta = 0
         #Left Edge
         if self.y > bounds['max_y']:
             self.heading = -1 * self.heading
+            self.heading_delta = 0
 
         # Execute motion
-        self.heading = angle_trunc(self.heading)
+        self.heading = angle_trunc(self.heading + self.heading_delta)
         self.x += distance * cos(self.heading)
         self.y += distance * sin(self.heading)
 

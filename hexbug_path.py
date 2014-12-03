@@ -6,10 +6,14 @@ from robot import robot
 def predict(points, frames_to_predict=60):
     points = points_since_last_collision(points)
     path = smooth(points)
+    prev_heading = calculate_angle(path[-2], path[-3])
     heading = calculate_angle(path[-1], path[-2])
+    heading_delta = heading - prev_heading
+    if heading_delta != 0:
+        heading_delta = heading_delta/abs(heading_delta) * min(abs(heading_delta), 0.05)
     speed = dist(path[-2], path[-1])
     x, y = path[-1]
-    bot = robot(x, y, heading, speed)
+    bot = robot(x, y, heading, speed, heading_delta)
     return ([bot.advance() for i in range(frames_to_predict)], path)
 
 def smooth(path, a = 0.18, B = .65, tolerance = 0.000001):
