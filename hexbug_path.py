@@ -4,6 +4,12 @@ from box_world import *
 from robot import robot
 
 def predict(points, frames_to_predict=60):
+    """
+    Since the points may contain noise, reduce the error by smoothing the
+    points along a path.
+    Return a tuple of size 2, containing an array of the predicted points
+    and the smoothed path.
+    """
     points = points_since_last_collision(points)
     path = smooth(points)
     prev_heading = calculate_angle(path[-2], path[-3])
