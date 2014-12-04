@@ -49,15 +49,6 @@ def where_is_point(point, wall_tolerance):
         
     return where_am_i
 
-centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
-with open(centroid_file, 'rb') as f:
-    centroid_coords = eval(f.read())
-
-
-centroid_coords = fill_missing_points(centroid_coords)
-centroid_coords = remove_outlier_points(centroid_coords)
-centroid_coords = fill_missing_points(centroid_coords)
-
 
 def frames_to_timestamp(frame):
     m = str(int(floor(frame / 24) / 60))
@@ -72,29 +63,20 @@ def frames_to_timestamp(frame):
     return (m + ':' + s)
 
 
-# iterate through points and list out properties
-point_properties_list = []
-for i in range(1, len(centroid_coords)):
+def output_coordinate_properties(centroid_coords):
+    point_properties_list = []
+    for i in range(1, len(centroid_coords)):
+        
+        frame = i
+        time_stamp = frames_to_timestamp(frame)
+        point = centroid_coords[i]
+        angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
+        distance = dist(centroid_coords[i-1], centroid_coords[i])
+        where_am_i = where_is_point(centroid_coords[i], 15)
+        
+        point_properties_list.append([frame, time_stamp, point, angle, distance, where_am_i])
     
-    frame = i
-    time_stamp = frames_to_timestamp(frame)
-    point = centroid_coords[i]
-    angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
-    distance = dist(centroid_coords[i-1], centroid_coords[i])
-    where_am_i = where_is_point(centroid_coords[i], 15)    
-    
-    point_properties_list.append([frame, time_stamp, point, angle, distance, where_am_i])
+    print 'frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i'
+    for p in point_properties_list:
+        print str(p)
 
-
-# clear file before writing
-output_file = 'C:\\Users\\ahernandez\\Desktop\\centroidDataouput.txt'
-open(output_file, 'w').close()
-    
-f = open(output_file,'w')
-
-# write out the points and their properties
-f.write('frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i' + '\n')
-for p in point_properties_list:
-    f.write(str(p) +'\n')
-
-f.close()

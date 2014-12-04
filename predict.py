@@ -7,6 +7,7 @@ from collections import defaultdict
 from math import *
 
 from box_world import *
+from collision_detection import output_coordinate_properties
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
 from hexbug_path import predict
@@ -19,6 +20,7 @@ def main():
     parser.add_argument('-i', '--input', help='Specify an input file', metavar='FILE', default=DEFAULT_TEST_FILE)
     parser.add_argument('-b', '--bounds', action='store_true', help='Calculate and print the bounds of the box')
     parser.add_argument('-p', '--properties', action='store_true', help='Output the properties for each point')
+    parser.add_argument('-p2', '--properties2', action='store_true', help='Output the properties for each point sequentially including frame, timnestamp, and location group')
     parser.add_argument('-t', '--test', action='store_true', help='Use prior points to predict the last 60 known points; graph the comparison')
     parser.add_argument('-r', '--random-test', action='store_true', help='Use prior points to predict the following 60 known points, starting at a random location; graph the comparison; repeat')
     parser.add_argument('-e', '--error-test', action='store_true', help='Use the entire input dataset to generate an average L2 error')
@@ -34,6 +36,8 @@ def main():
         print "Property Dictionary"
         prop_dict = build_property_dict(pt_arr)
         print prop_dict
+    elif args.properties2:
+        output_coordinate_properties(pt_arr)
     elif args.test or args.random_test:
         actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
         for i in range(int(args.iterations)):
