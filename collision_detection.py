@@ -80,7 +80,7 @@ def output_coordinate_properties(centroid_coords):
         
     return point_properties_list
 
-
+"""
 # scripting some experiments below -- will remove or integrate later
 centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
 with open(centroid_file, 'rb') as f:
@@ -113,3 +113,7 @@ for i in range(len(collisions)):
 
 # linear regression example (simple)
 # http://jmduke.com/posts/basic-linear-regressions-in-python/
+
+# linear regression example (multiple)
+# http://www.datarobot.com/blog/multiple-regression-using-statsmodels/
+"""
