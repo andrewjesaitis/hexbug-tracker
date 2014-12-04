@@ -73,7 +73,9 @@ def output_coordinate_properties(centroid_coords):
         point = centroid_coords[i]
         angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
         distance = dist(centroid_coords[i-1], centroid_coords[i])
-        where_am_i = where_is_point(centroid_coords[i], 15)
+        
+        wall_tolerance = 25
+        where_am_i = where_is_point(centroid_coords[i], wall_tolerance)
         if i >= angle_reach and i < len(centroid_coords) - angle_reach:
             heading_prior = calculate_angle(centroid_coords[i-angle_reach], centroid_coords[i-angle_reach+1])
             heading_after = calculate_angle(centroid_coords[i+angle_reach-1], centroid_coords[i+angle_reach])
@@ -86,4 +88,39 @@ def output_coordinate_properties(centroid_coords):
     print 'frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i'
     for p in point_properties_list:
         print str(p)
+        
+    return point_properties_list
 
+
+# scripting some experiments below -- will remove or integrate later
+centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
+with open(centroid_file, 'rb') as f:
+    centroid_coords = eval(f.read())
+centroid_coords = fill_missing_points(centroid_coords)
+centroid_coords = remove_outlier_points(centroid_coords)
+centroid_coords = fill_missing_points(centroid_coords)
+
+coords = output_coordinate_properties(centroid_coords)
+
+before = []
+collisions = []
+after = []
+
+for c in coords:
+    if c[4] > 0.75 and c[6] != 'away from boundary':
+        before.append(centroid_coords[c[0] - 7])
+        collisions.append(c)
+        after.append(centroid_coords[c[0] + 7])
+
+
+print len(before)
+print len(collisions)
+print len(after)
+
+for i in range(len(collisions)):
+        print 'before:' + str(before[i])
+        print 'collision:' + str(collisions[i][2])
+        print 'after:' + str(after[i])
+
+# linear regression example (simple)
+# http://jmduke.com/posts/basic-linear-regressions-in-python/
