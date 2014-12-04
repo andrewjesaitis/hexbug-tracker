@@ -37,7 +37,10 @@ def main():
         prop_dict = build_property_dict(pt_arr)
         print prop_dict
     elif args.properties2:
-        output_coordinate_properties(pt_arr)
+        pts_properties_list = output_coordinate_properties(pt_arr)
+        print 'frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i'
+        for p in pts_properties_list:
+            print str(p)
     elif args.test or args.random_test:
         actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
         for i in range(int(args.iterations)):

@@ -84,14 +84,10 @@ def output_coordinate_properties(centroid_coords):
             steering = 0.
 
         point_properties_list.append([frame, time_stamp, point, angle, steering, distance, where_am_i])
-
-    print 'frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i'
-    for p in point_properties_list:
-        print str(p)
         
     return point_properties_list
 
-
+"""
 # scripting some experiments below -- will remove or integrate later
 centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
 with open(centroid_file, 'rb') as f:
@@ -107,7 +103,7 @@ collisions = []
 after = []
 
 for c in coords:
-    if c[4] > 0.75 and c[6] != 'away from boundary':
+    if c[4] > .25 and c[6] != 'away from boundary':
         before.append(centroid_coords[c[0] - 7])
         collisions.append(c)
         after.append(centroid_coords[c[0] + 7])
@@ -118,9 +114,10 @@ print len(collisions)
 print len(after)
 
 for i in range(len(collisions)):
-        print 'before:' + str(before[i])
-        print 'collision:' + str(collisions[i][2])
-        print 'after:' + str(after[i])
+        print 'before: ' + '\t' + str(before[i])
+        print 'collision: ' + '\t' + str(collisions[i][2])
+        print 'after: ' + '\t' + '\t' + str(after[i])
 
 # linear regression example (simple)
 # http://jmduke.com/posts/basic-linear-regressions-in-python/
+"""
