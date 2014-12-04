@@ -38,7 +38,7 @@ def main():
         print prop_dict
     elif args.properties2:
         pts_properties_list = output_coordinate_properties(pt_arr)
-        print 'frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i'
+        print 'frame' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'steering' + '\t' + 'distance' + '\t' +  'where_am_i'
         for p in pts_properties_list:
             print str(p)
     elif args.test or args.random_test:
