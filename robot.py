@@ -22,6 +22,18 @@ class robot:
         self.distance_noise    = float(new_d_noise)
         self.measurement_noise = float(new_m_noise)
 
+    def advance(self):
+        """This function is used to advance the bot."""
+        self.move(self.distance)
+        return self.sense()
+
+    def sense(self):
+        """This function represents the robot sensing its location. When
+        measurements are noisy, this will return a value that is close to,
+        but not necessarily equal to, the robot's (x, y) position."""
+        return (random.gauss(self.x, self.measurement_noise),
+                random.gauss(self.y, self.measurement_noise))
+
 
     def move(self, distance, tolerance = 0.001):
         """This function turns the robot and then moves it forward."""
@@ -53,18 +65,6 @@ class robot:
         self.heading = angle_trunc(self.heading + self.heading_delta)
         self.x += distance * cos(self.heading)
         self.y += distance * sin(self.heading)
-
-    def advance(self):
-        """This function is used to advance the bot."""
-        self.move(self.distance)
-        return self.sense()
-
-    def sense(self):
-        """This function represents the robot sensing its location. When
-        measurements are noisy, this will return a value that is close to,
-        but not necessarily equal to, the robot's (x, y) position."""
-        return (random.gauss(self.x, self.measurement_noise),
-                random.gauss(self.y, self.measurement_noise))
 
     def __repr__(self):
         """This allows us to print a robot's position"""
