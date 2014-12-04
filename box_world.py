@@ -11,6 +11,9 @@ def angle_trunc(a):
         a += pi * 2
     return ((a + pi) % (pi * 2)) - pi
 
+def heading_difference(head1, head2):
+    return abs(angle_trunc(head2 - head1))
+
 def calculate_angle(point1, point2):
     x1, y1 = point1
     x2, y2 = point2

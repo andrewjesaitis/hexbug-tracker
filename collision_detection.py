@@ -64,6 +64,7 @@ def frames_to_timestamp(frame):
 
 
 def output_coordinate_properties(centroid_coords):
+    angle_reach = 7
     point_properties_list = []
     for i in range(1, len(centroid_coords)):
 
@@ -73,8 +74,14 @@ def output_coordinate_properties(centroid_coords):
         angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
         distance = dist(centroid_coords[i-1], centroid_coords[i])
         where_am_i = where_is_point(centroid_coords[i], 15)
+        if i >= angle_reach and i < len(centroid_coords) - angle_reach:
+            heading_prior = calculate_angle(centroid_coords[i-angle_reach], centroid_coords[i-angle_reach+1])
+            heading_after = calculate_angle(centroid_coords[i+angle_reach-1], centroid_coords[i+angle_reach])
+            steering = heading_difference(heading_prior, heading_after)
+        else:
+            steering = 0.
 
-        point_properties_list.append([frame, time_stamp, point, angle, distance, where_am_i])
+        point_properties_list.append([frame, time_stamp, point, angle, steering, distance, where_am_i])
 
     print 'frame ' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'distance ' + '\t' +  'where_am_i'
     for p in point_properties_list:
