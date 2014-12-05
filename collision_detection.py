@@ -1,8 +1,9 @@
+import numpy as np
+
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
 from hexbug_path import predict
-
 
 def where_is_point(point, wall_tolerance):
     """
@@ -12,7 +13,7 @@ def where_is_point(point, wall_tolerance):
     for example if min_x = 142 and wall_tolerance = 10,
     then you are near the left boundary if your point's x value is within 10 pixels plus or minus the min_x
     """
-
+    
     bounds = box_bounds()
     where_am_i = 'away from boundary'
 
@@ -55,7 +56,6 @@ def frames_to_timestamp(frame):
     s = str(int(floor(frame / 24) % 60)).zfill(2)
     return (m + ':' + s)
 
-
 def output_coordinate_properties(centroid_coords):
     angle_reach = 7
     point_properties_list = []
@@ -67,8 +67,10 @@ def output_coordinate_properties(centroid_coords):
         angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
         distance = dist(centroid_coords[i-1], centroid_coords[i])
         
-        wall_tolerance = 25
+        wall_tolerance = 30 # pixels
+        
         where_am_i = where_is_point(centroid_coords[i], wall_tolerance)
+
         if i >= angle_reach and i < len(centroid_coords) - angle_reach:
             heading_prior = calculate_angle(centroid_coords[i-angle_reach], centroid_coords[i-angle_reach+1])
             heading_after = calculate_angle(centroid_coords[i+angle_reach-1], centroid_coords[i+angle_reach])
@@ -80,40 +82,59 @@ def output_coordinate_properties(centroid_coords):
         
     return point_properties_list
 
+
+def find_angles_before_after_collision(centroid_coords):
+    before = []
+    after = []
+    
+    coord_props = output_coordinate_properties(centroid_coords)
+    
+    steering_indicating_collision = 0.7 # 0.7 radians ~= 40 degrees
+    
+    for i in range(0, len(coord_props)):
+        steering = coord_props[i][4]
+        relative_loc = coord_props[i][6]
+        
+        if steering >= steering_indicating_collision and relative_loc != 'away from boundary':
+            before_ang = coord_props[i - 7][3]
+            after_ang = coord_props[i + 7][3]
+            
+            before.append(before_ang)
+            after.append(after_ang)
+        
+    assert len(before) == len(after)
+    
+    return before, after
+
+
+def basic_linear_regression(x, y):
+    """
+    this functions returns the regressions coefficients, a and b
+    the regression equation used is: reflection_angle = a * incidence_angle + b
+    """
+    regression_coeffecients = np.polyfit(x, y, 1)
+    return regression_coeffecients
+
+def incident_reflection_regression_formula(inc_ang, regression_coefficients):
+    """
+    feed the angle of incidence and the regression_coeffecients as parameters
+    will return the angle of reflection
+    """
+    ref_ang = regression_coefficients[0] * inc_ang + regression_coefficients[1]
+    return ref_ang
+
 """
 # scripting some experiments below -- will remove or integrate later
 centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
 with open(centroid_file, 'rb') as f:
     centroid_coords = eval(f.read())
+
 centroid_coords = fill_missing_points(centroid_coords)
 centroid_coords = remove_outlier_points(centroid_coords)
 centroid_coords = fill_missing_points(centroid_coords)
 
-coords = output_coordinate_properties(centroid_coords)
+before, after = find_angles_before_after_collision(centroid_coords)
+regression_coefficients = basic_linear_regression(before, after)
 
-before = []
-collisions = []
-after = []
-
-for c in coords:
-    if c[4] > .25 and c[6] != 'away from boundary':
-        before.append(centroid_coords[c[0] - 7])
-        collisions.append(c)
-        after.append(centroid_coords[c[0] + 7])
-
-
-print len(before)
-print len(collisions)
-print len(after)
-
-for i in range(len(collisions)):
-        print 'before: ' + '\t' + str(before[i])
-        print 'collision: ' + '\t' + str(collisions[i][2])
-        print 'after: ' + '\t' + '\t' + str(after[i])
-
-# linear regression example (simple)
-# http://jmduke.com/posts/basic-linear-regressions-in-python/
-
-# linear regression example (multiple)
-# http://www.datarobot.com/blog/multiple-regression-using-statsmodels/
+print regression_coefficients
 """
