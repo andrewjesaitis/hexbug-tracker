@@ -10,20 +10,11 @@ class robot:
         self.x = x
         self.y = y
         self.heading = heading
-        self.speed = speed # only applies to target bot, who always moves at same speed.
-        self.speed_noise    = 0.0
-        self.measurement_noise = 0.0
+        self.speed = speed
         self.heading_delta = heading_delta
         dims = bug_dimensions()
         self.length = dims['length']
         self.breadth = dims['breadth']
-
-
-    def set_noise(self, new_d_noise, new_m_noise):
-        """This lets us change the noise parameters, which can be very
-        helpful when using particle filters."""
-        self.speed_noise    = float(new_d_noise)
-        self.measurement_noise = float(new_m_noise)
 
     def advance(self):
         """This function is used to advance the bot."""
@@ -31,17 +22,11 @@ class robot:
         return self.sense()
 
     def sense(self):
-        """This function represents the robot sensing its location. When
-        measurements are noisy, this will return a value that is close to,
-        but not necessarily equal to, the robot's (x, y) position."""
-        return (random.gauss(self.x, self.measurement_noise),
-                random.gauss(self.y, self.measurement_noise))
-
+        """This function represents the robot sensing its location."""
+        return (self.x, self.y)
 
     def move(self, speed, tolerance = 0.001):
         """This function turns the robot and then moves it forward."""
-        speed = random.gauss(speed, self.speed_noise)
-
         # truncate to fit physical limitations
         speed = max(0.0, speed)
 
