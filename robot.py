@@ -11,6 +11,7 @@ class robot:
         self.y = y
         self.heading = heading
         self.speed = speed
+        self.target_speed = speed
         self.heading_delta = heading_delta
         dims = bug_dimensions()
         self.length = dims['length']
@@ -18,22 +19,26 @@ class robot:
 
     def advance(self):
         """This function is used to advance the bot."""
-        self.move(self.speed)
+        self.move()
         return self.sense()
 
     def sense(self):
         """This function represents the robot sensing its location."""
         return (self.x, self.y)
 
-    def move(self, speed, tolerance = 0.001):
+    def move(self):
         """This function turns the robot and then moves it forward."""
+        # Accelerate up to the target speed
+        self.speed *= 1.2
+        self.speed = min(self.speed, self.target_speed)
+
         # truncate to fit physical limitations
-        speed = max(0.0, speed)
+        self.speed = max(0.0, self.speed)
 
         # Execute motion
         self.heading = angle_trunc(self.heading + self.heading_delta)
-        self.x += speed * cos(self.heading)
-        self.y += speed * sin(self.heading)
+        self.x += self.speed * cos(self.heading)
+        self.y += self.speed * sin(self.heading)
 
         self.bounce()
 
@@ -44,30 +49,35 @@ class robot:
         bug_max_x = self.x + self.x_width()
         bug_min_y = self.y - self.y_height()
         bug_max_y = self.y + self.y_height()
+        bounce_speed = 3
         if bug_min_x < bounds['min_x'] and abs(self.heading) > pi/2:
             # left wall bounce
             x_overstep = bug_min_x - bounds['min_x']
             self.x -= 2 * x_overstep
             self.heading = pi - self.heading
             self.heading_delta = 0
+            self.speed = bounce_speed
         if bug_max_x > bounds['max_x'] and abs(self.heading) < pi/2:
             # right wall bounce
             x_overstep = bug_max_x - bounds['max_x']
             self.x -= 2 * x_overstep
             self.heading = pi - self.heading
             self.heading_delta = 0
+            self.speed = bounce_speed
         if bug_min_y < bounds['min_y'] and self.heading < 0:
             # bottom wall bounce
             y_overstep = bug_min_y - bounds['min_y']
             self.y -= 2 * y_overstep
             self.heading = -1 * self.heading
             self.heading_delta = 0
+            self.speed = bounce_speed
         if bug_max_y > bounds['max_y'] and self.heading > 0:
             # top wall bounce
             y_overstep = bug_max_y - bounds['max_y']
             self.y -= 2 * y_overstep
             self.heading = -1 * self.heading
             self.heading_delta = 0
+            self.speed = bounce_speed
 
     def x_width(self):
         return abs(self.length * cos(self.heading) + self.breadth * sin(self.heading))

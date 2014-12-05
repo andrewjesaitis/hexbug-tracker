@@ -17,7 +17,7 @@ def predict(points, frames_to_predict=60):
     heading_delta = heading - prev_heading
     if heading_delta != 0:
         heading_delta = heading_delta/abs(heading_delta) * min(abs(heading_delta), 0.037)
-    speed = dist(path[-2], path[-1])
+    speed = 10
     x, y = path[-1]
     bot = robot(x, y, heading, speed, heading_delta)
     return ([bot.advance() for i in range(frames_to_predict)], path)

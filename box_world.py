@@ -30,8 +30,8 @@ def calculate_box_bounds(pt_arr):
 
 def bug_dimensions():
     return {
-        'length': 0,
-        'breadth': 0
+        'length': 32,
+        'breadth': 12
     }
 
 def box_bounds():
