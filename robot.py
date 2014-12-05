@@ -3,7 +3,7 @@ from box_world import *
 import random
 
 class robot:
-    def __init__(self, x = 0.0, y = 0.0, heading = 0.0, distance = 1.0, heading_delta = 0.0, length = 32, breadth = 12):
+    def __init__(self, x = 0.0, y = 0.0, heading = 0.0, distance = 1.0, heading_delta = 0.0):
         """This function is called when you create a new robot. It sets some of
         the attributes of the robot, either to their default values or to the values
         specified when it is created."""
@@ -14,8 +14,9 @@ class robot:
         self.distance_noise    = 0.0
         self.measurement_noise = 0.0
         self.heading_delta = heading_delta
-        self.length = length
-        self.breadth = breadth
+        dims = bug_dimensions()
+        self.length = dims['length']
+        self.breadth = dims['breadth']
 
 
     def set_noise(self, new_d_noise, new_m_noise):
