@@ -67,7 +67,7 @@ def remove_outlier_points(centroid_coord_list):
     x_arr, y_arr = zip(*filtered_arr)
     x_cutoffs = np.percentile(x_arr, [2, 98])
     y_cutoffs = np.percentile(y_arr, [2, 98])
-    print x_cutoffs
+    # print x_cutoffs
 
     #doing an empty slice in python returns a deep copy of the list
     cleaned_centroid_coord_list = centroid_coord_list[:]
