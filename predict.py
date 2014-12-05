@@ -7,7 +7,7 @@ from collections import defaultdict
 from math import *
 
 from box_world import *
-from collision_detection import output_coordinate_properties
+from collision_detection import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
 from hexbug_path import predict
@@ -24,6 +24,7 @@ def main():
     parser.add_argument('-t', '--test', action='store_true', help='Use prior points to predict the last 60 known points; graph the comparison')
     parser.add_argument('-r', '--random-test', action='store_true', help='Use prior points to predict the following 60 known points, starting at a random location; graph the comparison; repeat')
     parser.add_argument('-e', '--error-test', action='store_true', help='Use the entire input dataset to generate an average L2 error')
+    parser.add_argument('-rg', '--regression', action='store_true', help='Returns the regression coeffecients for the collision model')
     parser.add_argument('-n', '--iterations', default='1', metavar='N', help='For random tests, repeat N times')
     args = parser.parse_args()
 
@@ -41,6 +42,10 @@ def main():
         print 'frame' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'steering' + '\t' + 'distance' + '\t' +  'where_am_i'
         for p in pts_properties_list:
             print str(p)
+    elif args.regression:
+        before, after = find_angles_before_after_collision(pt_arr)
+        regression_coefficients = basic_linear_regression(before, after)
+        print regression_coefficients
     elif args.test or args.random_test:
         actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
         for i in range(int(args.iterations)):

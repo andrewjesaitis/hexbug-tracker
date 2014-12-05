@@ -135,6 +135,5 @@ centroid_coords = fill_missing_points(centroid_coords)
 
 before, after = find_angles_before_after_collision(centroid_coords)
 regression_coefficients = basic_linear_regression(before, after)
-
 print regression_coefficients
 """
