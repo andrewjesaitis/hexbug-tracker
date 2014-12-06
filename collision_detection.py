@@ -165,10 +165,6 @@ def return_regression_coefficients():
             'bottom': [-0.02879984,  0.68054395]
             }
 
-rc = return_regression_coefficients()
-print rc
-print rc['top'][0]
-print type(rc['top'][0])
 """
 # scripting some experiments below -- will remove or integrate later
 centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
