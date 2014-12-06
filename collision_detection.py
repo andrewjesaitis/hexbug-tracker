@@ -156,7 +156,7 @@ def incident_reflection_regression_formula(inc_ang, regression_coefficients):
     ref_ang = regression_coefficients[0] * inc_ang + regression_coefficients[1]
     return ref_ang
 
-
+"""
 # scripting some experiments below -- will remove or integrate later
 centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
 with open(centroid_file, 'rb') as f:
@@ -178,3 +178,4 @@ print regression_coefficients_left
 print regression_coefficients_top
 print regression_coefficients_right
 print regression_coefficients_bottom
+"""
