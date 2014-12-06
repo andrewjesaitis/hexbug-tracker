@@ -20,19 +20,19 @@ class robot:
 
         # Naive bounce model based on angle to reflection
         bounds = box_bounds()
-        #Top Edge
+        #Left Edge
         if self.x < bounds['min_x']:
             self.heading = pi - self.heading
             self.heading_delta = 0
-        #Right Edge
-        elif self.y < bounds['min_y']:
+        #Bottom Edge
+        if self.y < bounds['min_y']:
             self.heading = -1 * self.heading
             self.heading_delta = 0
-        #Bottom Edge
+        #Right Edge
         if self.x > bounds['max_x']:
             self.heading = pi - self.heading
             self.heading_delta = 0
-        #Left Edge
+        #Top Edge
         if self.y > bounds['max_y']:
             self.heading = -1 * self.heading
             self.heading_delta = 0
