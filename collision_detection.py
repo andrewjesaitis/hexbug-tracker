@@ -24,15 +24,15 @@ def where_is_point(point, wall_tolerance):
 
     if bounds['min_x'] - wall_tolerance <= point[0] <= bounds['min_x'] + wall_tolerance:
         near_extrema[0] = 1
-        where_am_i = 'near left_wall'
-
-    if bounds['max_x'] - wall_tolerance <= point[0] <= bounds['max_x'] + wall_tolerance:
-        near_extrema[1] = 1
-        where_am_i = 'near right wall'
+        where_am_i = 'near left wall'
 
     if bounds['min_y'] - wall_tolerance <= point[1] <= bounds['min_y'] + wall_tolerance:
         near_extrema[2] = 1
         where_am_i = 'near top wall'
+
+    if bounds['max_x'] - wall_tolerance <= point[0] <= bounds['max_x'] + wall_tolerance:
+        near_extrema[1] = 1
+        where_am_i = 'near right wall'
 
     if bounds['max_y'] - wall_tolerance <= point[1] <= bounds['max_y'] + wall_tolerance:
         near_extrema[3] = 1
@@ -84,8 +84,14 @@ def output_coordinate_properties(centroid_coords):
 
 
 def find_angles_before_after_collision(centroid_coords):
-    before = []
-    after = []
+    before_left   = []
+    after_left    = []
+    before_top    = []
+    after_top     = []
+    before_bottom = []
+    after_bottom  = []
+    before_right  = []
+    after_right   = []
     
     coord_props = output_coordinate_properties(centroid_coords)
     
@@ -93,18 +99,45 @@ def find_angles_before_after_collision(centroid_coords):
     
     for i in range(0, len(coord_props)):
         steering = coord_props[i][4]
-        relative_loc = coord_props[i][6]
+        where_am_i = coord_props[i][6]
         
-        if steering >= steering_indicating_collision and relative_loc != 'away from boundary':
-            before_ang = coord_props[i - 7][3]
-            after_ang = coord_props[i + 7][3]
+        if steering >= steering_indicating_collision and where_am_i != 'away from boundary':
+            if where_am_i == 'near left wall':
+                before_ang = coord_props[i - 7][3]
+                after_ang = coord_props[i + 7][3]
+                
+                before_left.append(before_ang)
+                after_left.append(after_ang)
             
-            before.append(before_ang)
-            after.append(after_ang)
-        
-    assert len(before) == len(after)
-    
-    return before, after
+                assert len(before_left) == len(after_left)
+            if where_am_i == 'near top wall':
+                before_ang = coord_props[i - 7][3]
+                after_ang = coord_props[i + 7][3]
+                
+                before_top.append(before_ang)
+                after_top.append(after_ang)
+            
+                assert len(before_top) == len(after_top)
+                
+            if where_am_i == 'near right wall':
+                before_ang = coord_props[i - 7][3]
+                after_ang = coord_props[i + 7][3]
+                
+                before_right.append(before_ang)
+                after_right.append(after_ang)
+            
+                assert len(before_left) == len(after_left)
+            
+            if where_am_i == 'near bottom wall':
+                before_ang = coord_props[i - 7][3]
+                after_ang = coord_props[i + 7][3]
+                
+                before_bottom.append(before_ang)
+                after_bottom.append(after_ang)
+            
+                assert len(before_left) == len(after_left)
+                
+    return before_left, after_left, before_top, after_top, before_right, after_right, before_bottom, after_bottom
 
 
 def basic_linear_regression(x, y):
@@ -122,3 +155,26 @@ def incident_reflection_regression_formula(inc_ang, regression_coefficients):
     """
     ref_ang = regression_coefficients[0] * inc_ang + regression_coefficients[1]
     return ref_ang
+
+
+# scripting some experiments below -- will remove or integrate later
+centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
+with open(centroid_file, 'rb') as f:
+    centroid_coords = eval(f.read())
+
+centroid_coords = fill_missing_points(centroid_coords)
+centroid_coords = remove_outlier_points(centroid_coords)
+centroid_coords = fill_missing_points(centroid_coords)
+
+before_left, after_left, before_top, after_top, before_right, after_right, before_bottom, after_bottom = find_angles_before_after_collision(centroid_coords)
+
+
+regression_coefficients_left = basic_linear_regression(before_left, after_left)
+regression_coefficients_top = basic_linear_regression(before_top, after_top)
+regression_coefficients_right = basic_linear_regression(before_right, after_right)
+regression_coefficients_bottom = basic_linear_regression(before_bottom, after_bottom)
+
+print regression_coefficients_left
+print regression_coefficients_top
+print regression_coefficients_right
+print regression_coefficients_bottom
