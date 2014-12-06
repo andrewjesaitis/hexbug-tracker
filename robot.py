@@ -1,5 +1,7 @@
-from math import *
 from box_world import *
+import collision_detection as cd
+
+from math import *
 import random
 
 class robot:
@@ -32,21 +34,25 @@ class robot:
 
         # Naive bounce model based on angle to reflection
         bounds = box_bounds()
+        
+        # Grab all sets of regression coefficients
+        regression_coefficients = cd.return_regression_coefficients()
+        
         #Top Edge
         if self.x < bounds['min_x']:
-            self.heading = pi - self.heading
+            self.heading = pi - cd.incident_reflection_regression_formula(regression_coefficients['top'], self.heading)
             self.heading_delta = 0
         #Right Edge
         elif self.y < bounds['min_y']:
-            self.heading = -1 * self.heading
+            self.heading = -1 * cd.incident_reflection_regression_formula(regression_coefficients['right'], self.heading)
             self.heading_delta = 0
         #Bottom Edge
         if self.x > bounds['max_x']:
-            self.heading = pi - self.heading
+            self.heading = pi - cd.incident_reflection_regression_formula(regression_coefficients['bottom'], self.heading)
             self.heading_delta = 0
         #Left Edge
         if self.y > bounds['max_y']:
-            self.heading = -1 * self.heading
+            self.heading = -1 * cd.incident_reflection_regression_formula(regression_coefficients['left'], self.heading)
             self.heading_delta = 0
 
         # Execute motion

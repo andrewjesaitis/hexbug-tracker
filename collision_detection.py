@@ -156,6 +156,19 @@ def incident_reflection_regression_formula(inc_ang, regression_coefficients):
     ref_ang = regression_coefficients[0] * inc_ang + regression_coefficients[1]
     return ref_ang
 
+# hard coding regression coefficients:
+def return_regression_coefficients():
+    '''regression coefficients, pre-calculated from training'''
+    return {'left':[0.75424812, 0.25551395],
+            'top':[-0.1303246,  -1.26208828],
+            'right':  [ 0.23168064, -0.09120714],
+            'bottom': [-0.02879984,  0.68054395]
+            }
+
+rc = return_regression_coefficients()
+print rc
+print rc['top'][0]
+print type(rc['top'][0])
 """
 # scripting some experiments below -- will remove or integrate later
 centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt' 
