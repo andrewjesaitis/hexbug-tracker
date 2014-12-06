@@ -66,9 +66,9 @@ def output_coordinate_properties(centroid_coords):
         point = centroid_coords[i]
         angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
         distance = dist(centroid_coords[i-1], centroid_coords[i])
-        
+    
         wall_tolerance = 30 # pixels
-        
+    
         where_am_i = where_is_point(centroid_coords[i], wall_tolerance)
 
         if i >= angle_reach and i < len(centroid_coords) - angle_reach:
@@ -79,7 +79,7 @@ def output_coordinate_properties(centroid_coords):
             steering = 0.
 
         point_properties_list.append([frame, time_stamp, point, angle, steering, distance, where_am_i])
-        
+    
     return point_properties_list
 
 
@@ -100,43 +100,36 @@ def find_angles_before_after_collision(centroid_coords):
     for i in range(0, len(coord_props)):
         steering = coord_props[i][4]
         where_am_i = coord_props[i][6]
-        
+
         if steering >= steering_indicating_collision and where_am_i != 'away from boundary':
             if where_am_i == 'near left wall':
                 before_ang = coord_props[i - 7][3]
                 after_ang = coord_props[i + 7][3]
-                
+    
                 before_left.append(before_ang)
                 after_left.append(after_ang)
-            
-                assert len(before_left) == len(after_left)
+    
             if where_am_i == 'near top wall':
                 before_ang = coord_props[i - 7][3]
                 after_ang = coord_props[i + 7][3]
-                
+
                 before_top.append(before_ang)
                 after_top.append(after_ang)
-            
-                assert len(before_top) == len(after_top)
-                
+
             if where_am_i == 'near right wall':
                 before_ang = coord_props[i - 7][3]
                 after_ang = coord_props[i + 7][3]
-                
+    
                 before_right.append(before_ang)
                 after_right.append(after_ang)
-            
-                assert len(before_left) == len(after_left)
-            
+
             if where_am_i == 'near bottom wall':
                 before_ang = coord_props[i - 7][3]
                 after_ang = coord_props[i + 7][3]
-                
+
                 before_bottom.append(before_ang)
                 after_bottom.append(after_ang)
-            
-                assert len(before_left) == len(after_left)
-                
+
     return before_left, after_left, before_top, after_top, before_right, after_right, before_bottom, after_bottom
 
 
