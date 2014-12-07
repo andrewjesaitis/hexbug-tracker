@@ -6,7 +6,7 @@ from edit_centroid_list import fill_missing_points, remove_outlier_points
 def where_is_point(point, wall_tolerance):
     """
     detects if a point is away from boundary or close to a boundary
-    the 'wall_tolerance' parameter gives somes leeway in determining if you are to a boundary
+    the 'wall_tolerance' parameter gives some leeway in determining if you are to a boundary
     for example if min_x = 142 and wall_tolerance = 10,
     then you are near the left boundary if your point's x value is within 10 pixels plus or minus the min_x
     """
