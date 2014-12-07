@@ -1,6 +1,8 @@
 from math import *
-from box_world import *
 import random
+
+from box_world import *
+from collision_detection import where_is_point
 
 class robot:
     def __init__(self, x = 0.0, y = 0.0, heading = 0.0, speed = 1.0, heading_delta = 0.0):
@@ -36,6 +38,8 @@ class robot:
         if self.y > bounds['max_y']:
             self.heading = -1 * self.heading
             self.heading_delta = 0
+        if where_is_point(self.sense(), 14)[-6:] == 'corner':
+            self.speed = 0
 
         # Execute motion
         self.heading = angle_trunc(self.heading + self.heading_delta)

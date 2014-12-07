@@ -70,10 +70,9 @@ See heading\_delta in robot.py
 
 #### Corners
 
-The hexbug often gets stuck in corners if approached near a 45 degree angle.
-Therefore when it approaches a corner at such an angle or it is already stuck in
-a corner, we predict that it will remain there for the next 60 frames. Sticking
-in corners decreased L2 error by 0.3%.
+The hexbug often gets stuck in corners. Therefore when it approaches a corner at
+such an angle or it is already stuck in a corner, we predict that it will remain
+there for the next 60 frames. Sticking in corners decreased L2 error by 0.6%.
 
 See hexbug\_path.py and collision\_detection.py
 
