@@ -45,6 +45,9 @@ def smooth(path, a = 0.18, B = .64, tolerance = 0.000001):
     return y
 
 def stuck_in_corner(points):
+    """
+    Detect if hexbug is stuck in a corner.
+    """
     corner_size = 12
     stuck_duration = 2
     for point in points[0:stuck_duration]:
@@ -53,4 +56,7 @@ def stuck_in_corner(points):
     return True
 
 def stall_in_corner(points):
+    """
+    Return a list of points identical to the last measured point
+    """
     return [points[0] for i in range(60)]
