@@ -6,9 +6,8 @@ from edit_centroid_list import fill_missing_points, remove_outlier_points
 def where_is_point(point, wall_tolerance = 30):
     """
     Detect if a point is away from boundary or close to a boundary.
-    'Wall_tolerance' parameter gives some leeway in determining if you are to a boundary.
-    For example if min_x = 142 and wall_tolerance = 10, then you are near the
-    left boundary if your point's x value is within 10 pixels plus or minus the min_x
+    'Wall_tolerance' is a distance in pixels, call it w.
+    A point is considered near a boundary if it falls within a distance w from the boundary.
     """
 
     bounds = box_bounds()
@@ -53,6 +52,11 @@ def frames_to_timestamp(frame):
     return (m + ':' + s)
 
 def output_coordinate_properties(centroid_coords):
+    """
+    centroid coords parameter is the training data.
+    Upon running this method, the following properties of every coordinate will be printed:
+    frame, time_stamp, point, angle, steering, distance, where_am_i
+    """
     angle_reach = 7
     point_properties_list = []
     for i in range(1, len(centroid_coords)):
@@ -77,6 +81,11 @@ def output_coordinate_properties(centroid_coords):
     return point_properties_list
 
 def find_angles_before_after_collision(centroid_coords):
+    """
+    centroid coords parameter is the training data.
+    this is a helper function which outputs the headings of coordinates before and after a collision along all four walls
+    the output of this function is later fed to a regression analysis
+    """
     before_left   = []
     after_left    = []
     before_top    = []
@@ -149,22 +158,3 @@ def return_regression_coefficients():
             'right':  [ 0.23168064, -0.09120714],
             'bottom': [-0.02879984,  0.68054395]
             }
-
-"""
-# scripting some experiments below -- will remove or integrate later
-centroid_file = 'C:\\Users\\ahernandez\\Desktop\\centroidData.txt'
-with open(centroid_file, 'rb') as f:
-    centroid_coords = eval(f.read())
-centroid_coords = fill_missing_points(centroid_coords)
-centroid_coords = remove_outlier_points(centroid_coords)
-centroid_coords = fill_missing_points(centroid_coords)
-before_left, after_left, before_top, after_top, before_right, after_right, before_bottom, after_bottom = find_angles_before_after_collision(centroid_coords)
-regression_coefficients_left = basic_linear_regression(before_left, after_left)
-regression_coefficients_top = basic_linear_regression(before_top, after_top)
-regression_coefficients_right = basic_linear_regression(before_right, after_right)
-regression_coefficients_bottom = basic_linear_regression(before_bottom, after_bottom)
-print regression_coefficients_left
-print regression_coefficients_top
-print regression_coefficients_right
-print regression_coefficients_bottom
-"""
