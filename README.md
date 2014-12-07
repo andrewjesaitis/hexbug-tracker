@@ -126,8 +126,9 @@ points.
 
 See edit\_centroid\_list.py
 
-### Attempted Alternative
+### Attempted Alternatives
 
+####Kalman Filter
 As an alternative to path smoothing, we also implemented a Kalman filter. Using
 a simple Kalman filter assumes that the robot's motion can be modeled in a
 linear system. The is a major assumption, but over short intervals the robot's
@@ -144,6 +145,15 @@ trajectory calculation, discussed above, we observed that the L2 error was not
 significantly better than the path smoothing algorithm. Due to the increased
 complexity of the Kalman filter's implementation, we chose to reduce noise with
 a path smoothing approach.
+
+####Linear Regression Wall Bounce Model
+As an alternative to the naive billiard ball bounce model, we attempted to implement a simple linear regression bounce model. In the model, the centroid coordinates immediately before and after a wall bounce were isolated. The headings of the centroid coordinates were then used to create an equation of the type: <br>
+```angle of reflection = m * angle of incidence + b```, 
+where m and b are the regression coeffecients produced by the regression analysis. Four equations were created for bounces off of the left, top, right, and bottom walls.
+
+Implementing this model proved difficult, and upon manual inspection, regression did not improve the L2 error. While the bounce angle was slightly more accurate, the predicted path leading up to the bounce needs refinement. The naive approach worked better to reduce the L2 error.
+
+On a future release, refining the predicted path of a hexbug as it approaches a wall would improve the accuracy of the regression model. Also, considering the speed of the hexbug as it bounces and extending the model from simple to multiple linear regression would likely yield more accurate bounce angles.
 
 Team
 ----
