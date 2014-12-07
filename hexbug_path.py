@@ -45,7 +45,7 @@ def points_since_last_collision(points):
     return points[-7:]
 
 def stuck_in_corner(points):
-    corner_size = 15
+    corner_size = 12
     stuck_duration = 2
     for point in points[0:stuck_duration]:
         if where_is_point(point, corner_size)[-6:] != 'corner':

@@ -73,7 +73,7 @@ class robot:
             self.heading = -1 * self.heading
             self.heading_delta = 0
             self.speed = bounce_speed
-        if where_is_point(self.sense(), 14)[-6:] == 'corner':
+        if where_is_point(self.sense(), 25)[-6:] == 'corner':
             self.target_speed = 0
             self.speed = 0
 
