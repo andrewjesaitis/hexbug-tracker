@@ -97,10 +97,22 @@ points.
 
 ### Attempted Alternative
 
-*[Describe our Kalman filter attempt]*
+As an alternative to path smoothing, we also implemented a Kalman filter. Using
+a simple Kalman filter assumes that the robot's motion can be modeled in a
+linear system. The is a major assumption, but over short intervals the robot's
+motion is generally linear. The motion was modeled as a system of 4 linear
+equations using the robots x and y coordinates as well as the robot's velocity
+in the x and y dimensions. An acceleration (external motion) term  was also
+included.
 
 Without modifying it to keep predictions within the bounds of the box, using a
 Kalman filter to predict trajectory increased L2 error by 212.7%.
+
+Once modified to to stay within the box bounds in an analogous manner to the
+trajectory calculation, disscused above, we observed that the L2 error was not
+significantly better than the path smoothing algorithm. Due to the increased
+complexity of the Kalman filter's implementation, we chose to reduce noise with
+a path smoothing approach.
 
 Team
 ----
