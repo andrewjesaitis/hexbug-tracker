@@ -33,6 +33,6 @@ def box_bounds():
     return {
         'min_x': 142,
         'max_x': 680,
-        'min_y': 79,
-        'max_y': 425
+        'min_y': 70,
+        'max_y': 427
     }
