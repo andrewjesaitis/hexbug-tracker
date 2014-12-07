@@ -114,6 +114,8 @@ treated as if the data was missing for that video frame. Then we fill in missing
 data with equidistant points along the line segment connecting the nearest known
 points.
 
+See edit\_centroid\_list.py
+
 ### Attempted Alternative
 
 As an alternative to path smoothing, we also implemented a Kalman filter. Using
