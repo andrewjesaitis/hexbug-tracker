@@ -43,9 +43,16 @@ def main():
         for p in pts_properties_list:
             print str(p)
     elif args.regression:
-        before, after = find_angles_before_after_collision(pt_arr)
-        regression_coefficients = basic_linear_regression(before, after)
-        print regression_coefficients
+        before_left, after_left, before_top, after_top, before_right, after_right, before_bottom, after_bottom = find_angles_before_after_collision(pt_arr)
+        regression_coefficients_left = basic_linear_regression(before_left, after_left)
+        regression_coefficients_top = basic_linear_regression(before_top, after_top)
+        regression_coefficients_right = basic_linear_regression(before_right, after_right)
+        regression_coefficients_bottom = basic_linear_regression(before_bottom, after_bottom)
+        
+        print '  left coefficients: ' + str(regression_coefficients_left)
+        print '   top coefficients: ' + str(regression_coefficients_top)
+        print ' right coefficients: ' + str(regression_coefficients_right)
+        print 'bottom coefficients: ' + str(regression_coefficients_bottom)
     elif args.test or args.random_test:
         actual_arr, predictions_arr, preceding_arr, smoothed_arr = [], [], [], []
         for i in range(int(args.iterations)):
