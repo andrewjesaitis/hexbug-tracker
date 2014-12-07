@@ -45,7 +45,9 @@ inside the box, except when striking a wall. We also observed significant noise
 in the centroid data, sometimes moving a point near but outside the path,
 sometimes moving a point outside the region of the box. For the former, more
 common type of noise, we found that applying a path smoothing algorithm reduced
-our average L2 error on training data by 7.3%.
+our average L2 error on training data by 7.3%. Because the path before and after
+striking the wall is not necessarily smooth, we attempt to detect when the wall
+has been struck and only smooth the path up to that point.
 
 See hexbug\_path.py
 
