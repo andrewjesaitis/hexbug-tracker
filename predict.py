@@ -19,8 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description='Default: Output a prediction to prediction.txt for the next 60 frames')
     parser.add_argument('-i', '--input', help='Specify an input file', metavar='FILE', default=DEFAULT_TEST_FILE)
     parser.add_argument('-b', '--bounds', action='store_true', help='Calculate and print the bounds of the box')
-    parser.add_argument('-p', '--properties', action='store_true', help='Output the properties for each point')
-    parser.add_argument('-p2', '--properties2', action='store_true', help='Output the properties for each point sequentially including frame, timnestamp, and location group')
+    parser.add_argument('-p', '--properties', action='store_true', help='Output the properties for each point sequentially including frame, timnestamp, and location group')
     parser.add_argument('-t', '--test', action='store_true', help='Use prior points to predict the last 60 known points; graph the comparison')
     parser.add_argument('-r', '--random-test', action='store_true', help='Use prior points to predict the following 60 known points, starting at a random location; graph the comparison; repeat')
     parser.add_argument('-e', '--error-test', action='store_true', help='Use the entire input dataset to generate an average L2 error')
@@ -34,10 +33,6 @@ def main():
         print "Box Bounds"
         print calculate_box_bounds(pt_arr)
     elif args.properties:
-        print "Property Dictionary"
-        prop_dict = build_property_dict(pt_arr)
-        print prop_dict
-    elif args.properties2:
         pts_properties_list = output_coordinate_properties(pt_arr)
         print 'frame' + '\t' + 'time_stamp' + '\t' +  'point' + '\t' +  'angle' + '\t' +  'steering' + '\t' + 'distance' + '\t' +  'where_am_i'
         for p in pts_properties_list:
@@ -93,15 +88,6 @@ def parse_input_file(filepath):
         input_data = remove_outlier_points(input_data)
         input_data = fill_missing_points(input_data)
     return input_data
-
-def build_property_dict(pts):
-    property_dict = defaultdict(list)
-    pts = map(tuple, pts)
-    prev_pt = pts[0]
-    for pt in pts:
-        property_dict[pt].append({"dist": dist(prev_pt, pt), "angle": calculate_angle(prev_pt, pt)})
-        prev_pt = pt
-    return property_dict
 
 def output_predictions(predict_arr):
     """
