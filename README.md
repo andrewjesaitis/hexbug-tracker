@@ -7,18 +7,28 @@ Testing Usage
 ### Usage:
 predict.py [-i FILE]
 
-Output a prediction to prediction.txt for the next 60 frames
-
-
-optional arguments:
-  `-h`, `--help`:            show additional options
-  `-i FILE`, `--input FILE`: Specify an input file (default: training\_video1-centroid\_data)
-
-The input file is a sequence of [x,y] pairs, one for each frame in the test video.
+The input file is a sequence of [x,y] pairs, one for each frame in the test
+video. The input file must take the form of:
 
 ```
 [[x1,y1], [x2,y2]...[xn,yn]]
 ```
+
+Output a prediction to prediction.txt for the next 60 frames. This file takes
+the form of:
+
+```
+x1,y1
+x2,y2
+...
+x60,y60
+```
+
+### Optional arguments:
+
+  `-h`, `--help`: show additional options
+
+  `-i FILE`, `--input FILE`: Specify an input file (default: training\_video1-centroid\_data)
 
 ### Environment:
 * Python 2.7.x
@@ -31,10 +41,11 @@ Training Usage
 --------------
 
 * See `./predict.py --help` for additional options
-* This project includes an iPython notebook that is useful for prototyping and
-  examining functions. The notebook and its plotting code has external
-  dependencies which are enumerated in requirements.txt. These dependencies can
-  be installed using pip: `pip install -r requirements.txt`.
+* This project includes an iPython notebook that is useful for visualizing data,
+prototyping tracking strategies and   examining functions. The notebook and its
+plotting code have additional external   dependencies which are enumerated in
+requirements.txt. These dependencies can   be installed using pip: `pip install
+-r requirements.txt`.
 
 Algorithm
 ---------
@@ -50,11 +61,11 @@ Algorithm
 ### Path Smoothing
 
 We observed that the hexbug generally moves in a smooth path while traveling
-inside the box, except when striking a wall. We also observed significant noise
-in the centroid data, sometimes moving a point near but outside the path,
-sometimes moving a point outside the region of the box. For the former, more
-common type of noise, we found that applying a path smoothing algorithm reduced
-our average L2 error on training data by 7.3%.
+inside the box, except when striking a wall. We also observed noise in the
+centroid data, sometimes moving a point near but outside the path, sometimes
+moving a point outside the region of the box. For the former, more common type
+of noise, we found that applying a path smoothing algorithm reduced our average
+L2 error on training data by 7.3%.
 
 See hexbug\_path.py
 
@@ -73,7 +84,8 @@ Although the hexbug does not typically travel in a straight line, it is nearly
 impossible to predict how it will turn. Thus a straight line is the most
 probable guess, lacking any other information. We did however find that a hexbug
 traveling on a curve is likely to continue on the same curve for some period of
-time. Continuing on the curve until hitting a wall decreased our L2 error by 5.4%.
+time. Continuing on the curve until hitting a wall decreased our L2 error by
+5.4%.
 
 See heading\_delta in robot.py
 
@@ -124,8 +136,8 @@ equations using the robots x and y coordinates as well as the robot's velocity
 in the x and y dimensions. An acceleration (external motion) term  was also
 included.
 
-Without modifying it to keep predictions within the bounds of the box, using a
-Kalman filter to predict trajectory increased L2 error by 212.7%.
+Without modifying the algorithm to keep predictions within the bounds of the
+box, using a Kalman filter to predict trajectory increased L2 error by 212.7%.
 
 Once modified to to stay within the box bounds in an analogous manner to the
 trajectory calculation, discussed above, we observed that the L2 error was not
