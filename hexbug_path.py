@@ -24,7 +24,7 @@ def predict(points, frames_to_predict=60):
     bot = robot(x, y, heading, speed, heading_delta)
     return ([bot.advance() for i in range(frames_to_predict)], path)
 
-def smooth(path, a = 0.18, B = .65, tolerance = 0.000001):
+def smooth(path, a = 0.18, B = .64, tolerance = 0.000001):
     x = path
     y = deepcopy(path)
     delta = tolerance
