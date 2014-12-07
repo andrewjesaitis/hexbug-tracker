@@ -13,8 +13,7 @@ def predict(points, frames_to_predict=60):
     """
     if stuck_in_corner(points):
         return (stall_in_corner(points), stall_in_corner(points))
-    points = points_since_last_collision(points)
-    path = smooth(points)
+    path = smooth(points[-10:])
     prev_heading = calculate_angle(path[-2], path[-3])
     heading = calculate_angle(path[-1], path[-2])
     heading_delta = heading - prev_heading
@@ -39,10 +38,6 @@ def smooth(path, a = 0.18, B = .65, tolerance = 0.000001):
                 y[i][j] = yi
                 delta += abs(yi - yinit)
     return y
-
-def points_since_last_collision(points):
-    '''Return the subset of points at the tail of points, up until the final collision'''
-    return points[-7:]
 
 def stuck_in_corner(points):
     corner_size = 12
