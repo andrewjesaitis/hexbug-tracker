@@ -4,7 +4,7 @@ hexbug-tracker
 Testing Usage
 -------------
 
-###Usage:
+### Usage:
 predict.py [-i FILE]
 
 Output a prediction to prediction.txt for the next 60 frames
@@ -20,10 +20,10 @@ The input file is a sequence of [x,y] pairs, one for each frame in the test vide
 [[x1,y1], [x2,y2]...[xn,yn]]
 ```
 
-####Environment:
+### Environment:
 * Python 2.7.x
 
-###External dependencies:
+### External dependencies:
 * Numpy
 * Matplotlib
 
