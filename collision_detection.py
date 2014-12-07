@@ -2,8 +2,6 @@ import numpy as np
 
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
-from hexbug_plot import plot_actual_vs_prediction
-from hexbug_path import predict
 
 def where_is_point(point, wall_tolerance):
     """
