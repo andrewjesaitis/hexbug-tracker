@@ -63,9 +63,11 @@ See hexbug\_path.py
 ### Trajectory Calculation
 
 The last three points on the smoothed path approximate the hexbug's current
-velocity and turning angle. Using these, we advance the hexbug prediction for 60
+heading and turning angle. Using these, we advance the hexbug prediction for 60
 frames, keeping the turning angle until it bounces off a wall, after which it
-moves in a straight line.
+moves in a straight line. The median speed in the training data is 10 pixels per
+frame, which we use for the distance between predicted points, except as
+described in the Bouncing section below.
 
 See hexbug\_path.py
 
@@ -95,6 +97,14 @@ When the simulated hexbug leaves the boundaries, we simulate a reflective
 bounce, as a billiard ball would bounce. This is a naive approximation.
 
 See hexbug\_path.py
+
+At each bounce, we decrease the simulated hexbug's speed and allow it to
+accelerate back to normal speed. The acceleration rate is slower than a real
+hexbug's acceleration, which keeps the predicted points closer to the estimated
+bounce point longer, thus slowing it from speeding off in a direction with
+decreased certainty. This decreased L2 error by 4.0%.
+
+See robot.py
 
 ### Reducing Noise
 

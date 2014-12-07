@@ -28,7 +28,7 @@ class robot:
     def move(self):
         """This function turns the robot and then moves it forward."""
         # Accelerate up to the target speed
-        self.speed *= 1.2
+        self.speed *= 1.075
         self.speed = min(self.speed, self.target_speed)
 
         # truncate to fit physical limitations
