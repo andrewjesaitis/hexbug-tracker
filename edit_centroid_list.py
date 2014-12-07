@@ -4,8 +4,8 @@ from box_world import dist, calculate_angle
 
 def find_intermediate_points(point1, point2, d):
     """
-    computes a point between point1 and point2.
-    the computed point is a distance, d, away from point1
+    Compute a point between point1 and point2.
+    The computed point is a distance, d, away from point1
     """
     x1, y1 = point1
     x2, y2 = point2
@@ -25,6 +25,10 @@ def find_intermediate_points(point1, point2, d):
     return point3
 
 def fill_missing_points(centroid_coord_list):
+    """
+    Iterate through a list of coordinates. For any (-1,-1) coordinate, replace it with
+    an interpolated coordinate between neighboring coordinates.
+    """
     centroid_coords_with_estimates_list = list(centroid_coord_list)
 
     # iterate through centroid_coord_list and find unknown centroids
@@ -55,6 +59,11 @@ def fill_missing_points(centroid_coord_list):
     return centroid_coords_with_estimates_list
 
 def remove_outlier_points(centroid_coord_list):
+    """
+    Cleans the input list of coordinate pairs. Any coordinates in the top
+    or bottom 2 percentiles or coordinates at a distance of more than one
+    standard deviation away from it's neighbor are replaced with a (-1,-1) error coordinate.
+    """
     distance_list = []
     prev_pt = centroid_coord_list[0]
     for pt in centroid_coord_list:

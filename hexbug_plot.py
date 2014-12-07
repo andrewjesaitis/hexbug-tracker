@@ -4,6 +4,10 @@ from matplotlib.patches import Rectangle
 from box_world import box_bounds
 
 def plot_actual_vs_prediction(actual_arr, prediction_arr, orig_preceding_arr=[[]], smoothed_preceding_arr=[[]], err_fn=None):
+    """
+    Plots the incoming path of the hexbug (both raw and smoothed), the predicted path of the hexbug,
+    and the actual path of the hexbug. Each plot is annotated with it's associated L2 error.
+    """
     l2_err_arr = []
     for idx, (actual, prediction, orig_preceding, smoothed_preceding) in enumerate(zip(actual_arr, prediction_arr, orig_preceding_arr, smoothed_preceding_arr)):
         plt.figure()

@@ -48,7 +48,7 @@ def main():
         regression_coefficients_top = basic_linear_regression(before_top, after_top)
         regression_coefficients_right = basic_linear_regression(before_right, after_right)
         regression_coefficients_bottom = basic_linear_regression(before_bottom, after_bottom)
-        
+
         print '  left coefficients: ' + str(regression_coefficients_left)
         print '   top coefficients: ' + str(regression_coefficients_top)
         print ' right coefficients: ' + str(regression_coefficients_right)
@@ -83,6 +83,10 @@ def main():
         output_predictions(actual)
 
 def parse_input_file(filepath):
+    """
+    Read input file as a JSON array. The data is then cleaned and returned
+    as at python list of coordinate pairs.
+    """
     with open(filepath, 'r') as f:
         input_data = json.load(f)
         input_data = fill_missing_points(input_data)
@@ -100,12 +104,20 @@ def build_property_dict(pts):
     return property_dict
 
 def output_predictions(predict_arr):
+    """
+    Output an array of points to prediction.txt file. The content of the file is
+    formated so that each line contains "x,y"
+    """
     assert len(predict_arr) == FRAMES_TO_PREDICT
     with open('prediction.txt', 'w') as f:
         for pt in predict_arr:
             f.write(",".join(map(str, pt))+"\n")
 
 def calc_l2_error(prediction, actual):
+    """
+    Calculate the L2 error between two list of coordinates - the predicted and actual. The L2 error is
+    defined as the square root of the sum of the squares of the distances between associated coordinates.
+    """
     assert len(prediction) == len(actual)
     return round(sqrt(sum([dist(pt_predict,pt_actual)**2 for pt_predict,pt_actual in zip(prediction,actual)])), 2)
 
