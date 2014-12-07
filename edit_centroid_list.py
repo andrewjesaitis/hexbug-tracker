@@ -1,6 +1,6 @@
 from math import *
 import numpy as np
-from box_world import dist, calculate_angle
+from hexbug_util import dist, calculate_angle
 
 def find_intermediate_points(point1, point2, d):
     """

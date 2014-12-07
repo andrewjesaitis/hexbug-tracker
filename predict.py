@@ -6,8 +6,7 @@ import random
 from collections import defaultdict
 from math import *
 
-from box_world import *
-from collision_detection import *
+from hexbug_util import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 from hexbug_plot import plot_actual_vs_prediction
 from hexbug_path import predict

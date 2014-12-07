@@ -153,7 +153,7 @@ attempted to implement a simple linear regression bounce model. In the model,
 the centroid coordinates immediately before and after a wall bounce were
 isolated. The headings of the centroid coordinates were then used to create an
 equation of the type: <br> ```angle of reflection = m * angle of incidence +
-b```,  where m and b are the regression coeffecients produced by the regression
+b```,  where m and b are the regression coefficients produced by the regression
 analysis. Four equations were created for bounces off of the left, top, right,
 and bottom walls.
 

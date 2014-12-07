@@ -1,6 +1,6 @@
 from copy import deepcopy
 
-from box_world import *
+from hexbug_util import *
 from robot import robot
 
 def predict(points, frames_to_predict=60):
@@ -59,46 +59,3 @@ def stall_in_corner(points):
     Return a list of points identical to the last measured point
     """
     return [points[0] for i in range(60)]
-
-def where_is_point(point, wall_tolerance = 30):
-    """
-    Detect if a point is away from boundary or close to a boundary.
-    'Wall_tolerance' is a distance in pixels, call it w.
-    A point is considered near a boundary if it falls within a distance w from the boundary.
-    """
-
-    bounds = box_bounds()
-    where_am_i = 'away from boundary'
-
-    # [min x, max x, min y, max y]
-    # if list element is 0 then not near an extrema, i.e, not near either an extreme x and/or y value.
-    # if list element is 1 then near the corresponding extrema, i.e, near either an extreme x and/or y value.
-    near_extrema = [0, 0, 0, 0]
-
-    if bounds['min_x'] - wall_tolerance <= point[0] <= bounds['min_x'] + wall_tolerance:
-        near_extrema[0] = 1
-        where_am_i = 'near left wall'
-
-    if bounds['min_y'] - wall_tolerance <= point[1] <= bounds['min_y'] + wall_tolerance:
-        near_extrema[2] = 1
-        where_am_i = 'near top wall'
-
-    if bounds['max_x'] - wall_tolerance <= point[0] <= bounds['max_x'] + wall_tolerance:
-        near_extrema[1] = 1
-        where_am_i = 'near right wall'
-
-    if bounds['max_y'] - wall_tolerance <= point[1] <= bounds['max_y'] + wall_tolerance:
-        near_extrema[3] = 1
-        where_am_i = 'near bottom wall'
-
-    if sum(near_extrema) > 1:
-        if near_extrema == [1, 0, 1, 0]:
-            where_am_i = 'near top left corner'
-        elif near_extrema == [0, 1, 1, 0]:
-            where_am_i = 'near top right corner'
-        elif near_extrema == [1, 0, 0, 1]:
-            where_am_i = 'near bottom left corner'
-        else:
-            where_am_i = 'near bottom right corner'
-
-    return where_am_i

@@ -1,7 +1,7 @@
 import warnings
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
-from box_world import box_bounds
+from hexbug_util import box_bounds
 
 def plot_actual_vs_prediction(actual_arr, prediction_arr, orig_preceding_arr=[[]], smoothed_preceding_arr=[[]], err_fn=None):
     """

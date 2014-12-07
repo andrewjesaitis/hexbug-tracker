@@ -1,8 +1,7 @@
 from math import *
 import random
 
-from box_world import *
-from collision_detection import where_is_point
+from hexbug_util import *
 
 class robot:
     def __init__(self, x = 0.0, y = 0.0, heading = 0.0, speed = 1.0, heading_delta = 0.0):
