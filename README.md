@@ -4,9 +4,11 @@ hexbug-tracker
 Testing Usage
 -------------
 
-usage: predict.py [-i FILE]
+###Usage:
+predict.py [-i FILE]
 
 Output a prediction to prediction.txt for the next 60 frames
+
 
 optional arguments:
   `-h`, `--help`:            show additional options
@@ -18,11 +20,18 @@ The input file is a sequence of [x,y] pairs, one for each frame in the test vide
 [[x1,y1], [x2,y2]...[xn,yn]]
 ```
 
+####Environment:
+* Python 2.7.x
+
+###External dependencies:
+* Numpy
+* Matplotlib
+
 Training Usage
 --------------
 
 * See `./predict.py --help` for additional options
-* This project includes an ipython notebook that is useful for prototyping and
+* This project includes an iPython notebook that is useful for prototyping and
   examining functions. The notebook and its plotting code has external
   dependencies which are enumerated in requirements.txt. These dependencies can
   be installed using pip: `pip install -r requirements.txt`.
@@ -32,11 +41,11 @@ Algorithm
 
 ### Summary
 
+* Fill in missing/erroneous data using equidistant points on the hexbug's path.
 * Use path smoothing on the tail of the given centroids to help account for noise.
 * Assume the most probable behavior given the last known trajectory.
 * Get stuck in corners.
 * Bounce off of walls to stay within the box boundaries found in training.
-* Fill in missing/erroneous data using equidistant points on the hexbug's path.
 
 ### Path Smoothing
 
@@ -109,7 +118,7 @@ Without modifying it to keep predictions within the bounds of the box, using a
 Kalman filter to predict trajectory increased L2 error by 212.7%.
 
 Once modified to to stay within the box bounds in an analogous manner to the
-trajectory calculation, disscused above, we observed that the L2 error was not
+trajectory calculation, discussed above, we observed that the L2 error was not
 significantly better than the path smoothing algorithm. Due to the increased
 complexity of the Kalman filter's implementation, we chose to reduce noise with
 a path smoothing approach.
