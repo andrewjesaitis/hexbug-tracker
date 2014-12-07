@@ -3,7 +3,7 @@ import numpy as np
 from box_world import *
 from edit_centroid_list import fill_missing_points, remove_outlier_points
 
-def where_is_point(point, wall_tolerance):
+def where_is_point(point, wall_tolerance = 30):
     """
     detects if a point is away from boundary or close to a boundary
     the 'wall_tolerance' parameter gives some leeway in determining if you are to a boundary
@@ -64,9 +64,7 @@ def output_coordinate_properties(centroid_coords):
         angle = calculate_angle(centroid_coords[i-1], centroid_coords[i])
         distance = dist(centroid_coords[i-1], centroid_coords[i])
     
-        wall_tolerance = 30 # pixels
-    
-        where_am_i = where_is_point(centroid_coords[i], wall_tolerance)
+        where_am_i = where_is_point(centroid_coords[i])
 
         if i >= angle_reach and i < len(centroid_coords) - angle_reach:
             heading_prior = calculate_angle(centroid_coords[i-angle_reach], centroid_coords[i-angle_reach+1])
