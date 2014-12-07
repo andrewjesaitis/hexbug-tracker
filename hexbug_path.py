@@ -1,6 +1,7 @@
 from copy import deepcopy
 
 from box_world import *
+from collision_detection import where_is_point
 from robot import robot
 
 def predict(points, frames_to_predict=60):
@@ -10,6 +11,8 @@ def predict(points, frames_to_predict=60):
     Return a tuple of size 2, containing an array of the predicted points
     and the smoothed path.
     """
+    if stuck_in_corner(points):
+        return (stall_in_corner(points), stall_in_corner(points))
     points = points_since_last_collision(points)
     path = smooth(points)
     prev_heading = calculate_angle(path[-2], path[-3])
@@ -40,3 +43,14 @@ def smooth(path, a = 0.18, B = .65, tolerance = 0.000001):
 def points_since_last_collision(points):
     '''Return the subset of points at the tail of points, up until the final collision'''
     return points[-7:]
+
+def stuck_in_corner(points):
+    corner_size = 15
+    stuck_duration = 2
+    for point in points[0:stuck_duration]:
+        if where_is_point(point, corner_size)[-6:] != 'corner':
+            return False
+    return True
+
+def stall_in_corner(points):
+    return [points[0] for i in range(60)]
