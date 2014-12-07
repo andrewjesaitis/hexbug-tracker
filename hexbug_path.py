@@ -25,6 +25,11 @@ def predict(points, frames_to_predict=60):
     return ([bot.advance() for i in range(frames_to_predict)], path)
 
 def smooth(path, a = 0.18, B = .64, tolerance = 0.000001):
+    """
+    Smooth a series of coordinates by minimizing the the error between the actual
+    point its associated smoothed point and the distance between consecutive
+    smoothed points. The function returns a list represented the smoothed coordinates.
+    """
     x = path
     y = deepcopy(path)
     delta = tolerance
