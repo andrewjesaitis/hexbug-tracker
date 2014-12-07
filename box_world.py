@@ -28,15 +28,8 @@ def calculate_box_bounds(pt_arr):
 
     return ((min_x,min_y), (min_x, max_y), (max_x, min_y), (max_x, max_y))
 
-def bug_dimensions():
-    return {
-        'length': 32,
-        'breadth': 12
-    }
-
 def box_bounds():
     '''box bounds, pre-calculated from training'''
-    min_centroid_offset_from_wall = bug_dimensions()['breadth'] / 2
     return {
         'min_x': 148,
         'max_x': 677,
