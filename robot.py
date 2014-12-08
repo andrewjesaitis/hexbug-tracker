@@ -41,7 +41,11 @@ class robot:
         self.bounce()
 
     def bounce(self):
-        # Naive bounce model based on angle to reflection
+        '''
+        Naive bounce model based on angle to reflection.
+        Decrease speed after bouncing.
+        Stick in corners.
+        '''
         bounds = box_bounds()
         bounce_speed = 3
         if self.x < bounds['min_x'] and abs(self.heading) > pi/2:

@@ -44,6 +44,7 @@ def plot_actual_vs_prediction(actual_arr, prediction_arr, orig_preceding_arr=[[]
     plt.show()
 
 def set_layout(plt):
+    '''Set up the layout so everything fits in the plot'''
     with warnings.catch_warnings():
         warnings.simplefilter('ignore')
         plt.tight_layout(rect=(0, .13, 1, 1.02))

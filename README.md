@@ -145,16 +145,16 @@ significantly better than the path smoothing algorithm. Due to the increased
 complexity of the Kalman filter's implementation, we chose to reduce noise with
 a path smoothing approach.
 
-####Linear Regression
+####Linear Regression Wall Bounce Model
 
-Wall Bounce Model As an alternative to the naive billiard ball bounce model, we
-attempted to implement a simple linear regression bounce model. In the model,
-the centroid coordinates immediately before and after a wall bounce were
-isolated. The headings of the centroid coordinates were then used to create an
-equation of the type: <br> ```angle of reflection = m * angle of incidence +
-b```,  where m and b are the regression coefficients produced by the regression
-analysis. Four equations were created for bounces off of the left, top, right,
-and bottom walls.
+As an alternative to the naive billiard ball bounce model, we attempted to
+implement a simple linear regression bounce model. In the model, the centroid
+coordinates immediately before and after a wall bounce were isolated. The
+headings of the centroid coordinates were then used to create an equation of
+the type: <br> ```angle of reflection = m * angle of incidence + b```,  where m
+and b are the regression coefficients produced by the regression analysis. Four
+equations were created for bounces off of the left, top, right, and bottom
+walls.
 
 Implementing this model proved difficult, and upon manual inspection, regression
 did not improve the L2 error. While the bounce angle was slightly more accurate,

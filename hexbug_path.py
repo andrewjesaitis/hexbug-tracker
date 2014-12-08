@@ -56,6 +56,6 @@ def stuck_in_corner(points):
 
 def stall_in_corner(points):
     """
-    Return a list of points identical to the last measured point
+    Return a list of points identical to the first point in points.
     """
     return [points[0] for i in range(60)]

@@ -96,6 +96,9 @@ def where_is_point(point, wall_tolerance = 30):
     return where_am_i
 
 def frames_to_timestamp(frame):
+    '''
+    Convert a frame index to a timestamp, assuming 24 frames per second.
+    '''
     m = str(int(floor(frame / 24) / 60)).zfill(2)
     s = str(int(floor(frame / 24) % 60)).zfill(2)
     return (m + ':' + s)
