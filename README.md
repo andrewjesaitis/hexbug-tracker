@@ -61,11 +61,10 @@ Algorithm
 ### Path Smoothing
 
 We observed that the hexbug generally moves in a smooth path while traveling
-inside the box, except when striking a wall. We also observed noise in the
-centroid data, sometimes moving a point near but outside the path, sometimes
-moving a point outside the region of the box. For the former, more common type
-of noise, we found that applying a path smoothing algorithm reduced our average
-L2 error on training data by 7.3%.
+inside the box. We also observed noise in the centroid data, sometimes moving a
+point near but outside the path, sometimes moving a point outside the region of
+the box. For the former, more common type of noise, we found that applying a
+path smoothing algorithm reduced our average L2 error on training data by 7.3%.
 
 See hexbug\_path.py
 
